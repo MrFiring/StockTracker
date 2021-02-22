@@ -2,6 +2,10 @@ package ru.mrfiring.stocktracker.repository.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import ru.mrfiring.stocktracker.repository.domain.DomainQuote
+import ru.mrfiring.stocktracker.repository.domain.DomainStockDetail
+import ru.mrfiring.stocktracker.repository.domain.DomainStockSymbol
+import ru.mrfiring.stocktracker.repository.network.StockQuote
 
 @Entity
 data class DatabaseStockSymbol(
@@ -42,3 +46,16 @@ data class DatabaseStockQuote(
         val previousDayOpen: Double,
         val time: Double
 )
+
+fun DatabaseStockSymbol.asDomainObject(
+        companyName: String,logoUrl: String, deltaPrice: Double, currentPrice: Double
+): DomainStockSymbol {
+        return DomainStockSymbol(displaySymbol, companyName, currentPrice, deltaPrice, logoUrl)
+}
+
+fun DatabaseCompany.asDomainObject(
+        quote: DomainQuote): DomainStockDetail
+= DomainStockDetail(displaySymbol, exchange, marketCapitalization,
+name, phone, shareOutStanding, finhubIndustry, quote)
+
+fun DatabaseStockQuote.asDomainModel(): DomainQuote = DomainQuote(dayHigh, dayLow, dayOpen, previousDayOpen)
