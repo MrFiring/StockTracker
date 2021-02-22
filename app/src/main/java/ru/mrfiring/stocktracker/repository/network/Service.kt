@@ -21,6 +21,12 @@ interface StockService{
         @Query("symbol") symbol: String,
         @Query("token") token: String = TOKEN
     ): Call<CompanyProfile>
+
+    @GET("quote")
+    fun getStockQuote(
+            @Query("symbol") symbol: String,
+            @Query("token") token: String = TOKEN
+    ): Call<StockQuote>
 }
 
 object FinhubNetwork{
