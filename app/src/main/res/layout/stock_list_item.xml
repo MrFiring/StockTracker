@@ -4,7 +4,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <variable
+            name="stockSymbol"
+            type="ru.mrfiring.stocktracker.repository.domain.DomainStockSymbol" />
+        <variable
+            name="clickListener"
+            type="ru.mrfiring.stocktracker.home.HomeRecyclerViewAdapter.ClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
