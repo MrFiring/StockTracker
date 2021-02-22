@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import ru.mrfiring.stocktracker.repository.database.asDomainObject
+import ru.mrfiring.stocktracker.repository.domain.DomainStockSymbol
 import ru.mrfiring.stocktracker.repository.network.FinhubNetwork
 import ru.mrfiring.stocktracker.repository.network.StockSymbol
 
@@ -15,7 +17,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val navigateToSearchFragment: LiveData<Boolean>
         get() = _navigateToSearchFragment
 
-    val _response = MutableLiveData<List<StockSymbol>>()
+    val _response = MutableLiveData<List<DomainStockSymbol>>()
 
     init{
         getFinhubSymbols()
@@ -35,7 +37,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                     call: Call<List<StockSymbol>>,
                     response: Response<List<StockSymbol>>
             ) {
-                _response.value = response.body()
+                _response.value = response.body()?.map {
+                    it.asDatabaseObject().asDomainObject("hello", "", -0.35, 130.5)
+                }
             }
 
             override fun onFailure(call: Call<List<StockSymbol>>, t: Throwable) {
