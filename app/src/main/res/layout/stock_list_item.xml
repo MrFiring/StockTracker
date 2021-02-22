@@ -14,7 +14,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> clickListener.onClick(stockSymbol)}">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -49,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="32dp"
-                    android:text="TextView"
+                    android:text="@{stockSymbol.symbol}"
                     app:layout_constraintStart_toEndOf="@+id/symbolLogo"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="APPL"/>
@@ -60,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="12dp"
-                    android:text="TextView"
+                    android:text="@{stockSymbol.companyName}"
                     app:layout_constraintStart_toEndOf="@+id/symbolLogo"
                     app:layout_constraintTop_toBottomOf="@+id/symbol"
                     tools:text="Apple Inc."/>
@@ -71,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="24dp"
-                    android:text="TextView"
+                    android:text="@{String.valueOf(stockSymbol.currentPrice)}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="130.05$" />
@@ -81,7 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:text="TextView"
+                    android:text="@{String.valueOf(stockSymbol.deltaPrice)}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/currentPrice"
