@@ -7,6 +7,7 @@ import kotlinx.android.parcel.Parcelize
 import ru.mrfiring.stocktracker.repository.database.DatabaseCompany
 import ru.mrfiring.stocktracker.repository.database.DatabaseStockQuote
 import ru.mrfiring.stocktracker.repository.database.DatabaseStockSymbol
+import java.util.function.LongToDoubleFunction
 
 /*[
    {
@@ -21,7 +22,7 @@ import ru.mrfiring.stocktracker.repository.database.DatabaseStockSymbol
 ]
 */
 
-@Parcelize
+@JsonClass(generateAdapter = true)
 data class StockSymbol(
     val currency : String,
     val description : String,
@@ -30,7 +31,7 @@ data class StockSymbol(
     val mic: String,
     val symbol: String,
     val type: String
-):Parcelable{
+){
     fun asDatabaseObject(): DatabaseStockSymbol{
         return DatabaseStockSymbol(displaySymbol, description, currency, figi, mic, type)
     }
@@ -83,7 +84,7 @@ data class CompanyProfile(
     "t": 1582641000
 }*/
 
-@Parcelize
+@JsonClass(generateAdapter = true)
 data class StockQuote(
         @Json(name = "c") val current: Double,
         @Json(name = "h") val dayHigh: Double,
@@ -91,9 +92,9 @@ data class StockQuote(
         @Json(name = "o") val dayOpen: Double,
         @Json(name = "pc") val previousDayOpen: Double,
         @Json(name = "t") val time: Double
-) :Parcelable{
+){
     fun asDatabaseObject(symbol: String): DatabaseStockQuote{
-        return DatabaseStockQuote(symbol, current, dayHigh, dayLow, dayOpen, previousDayOpen, time)
+        return DatabaseStockQuote(symbol, current, dayHigh, dayLow, dayOpen, previousDayOpen, time.toDouble())
     }
 }
 
