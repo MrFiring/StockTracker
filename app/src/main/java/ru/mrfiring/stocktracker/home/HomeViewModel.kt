@@ -15,12 +15,16 @@ import ru.mrfiring.stocktracker.repository.database.getDatabase
 import ru.mrfiring.stocktracker.repository.domain.DomainStockSymbol
 import ru.mrfiring.stocktracker.repository.network.FinhubNetwork
 import ru.mrfiring.stocktracker.repository.network.StockSymbol
+import java.io.IOException
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val _navigateToSearchFragment = MutableLiveData<Boolean>()
     val navigateToSearchFragment: LiveData<Boolean>
         get() = _navigateToSearchFragment
 
+    private val _isNetworkError = MutableLiveData<Boolean>()
+    val isNetworkError
+    get() = _isNetworkError
 
     private val stockRepository = StockRepository(getDatabase(application))
     val stockList = stockRepository.symbols
@@ -37,8 +41,16 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         _navigateToSearchFragment.value = false
     }
 
+    fun networkErrorShown(){
+        _isNetworkError.value = false
+    }
+
     fun refreshDataFromRepository() = viewModelScope.launch {
-        stockRepository.refreshStocks()
+        try {
+            stockRepository.refreshStocks()
+        }catch (ex: IOException){
+            _isNetworkError.value = true
+        }
     }
 
 

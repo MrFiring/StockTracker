@@ -17,13 +17,13 @@ interface StockService{
     ) : List<StockSymbol>
 
     @GET("stock/profile2")
-    fun getCompanyProfile(
+    suspend fun getCompanyProfile(
         @Query("symbol") symbol: String,
         @Query("token") token: String = TOKEN
     ): CompanyProfile
 
     @GET("quote")
-    fun getStockQuote(
+    suspend fun getStockQuote(
             @Query("symbol") symbol: String,
             @Query("token") token: String = TOKEN
     ): StockQuote

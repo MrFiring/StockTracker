@@ -33,7 +33,12 @@ class HomeFragment : Fragment() {
             Toast.makeText(context, it.companyName, Toast.LENGTH_SHORT).show()
         })
 
-
+        homeViewModel.isNetworkError.observe(viewLifecycleOwner, Observer {
+            if(it) {
+                Toast.makeText(context, "Network error occured.", Toast.LENGTH_SHORT).show()
+                homeViewModel.networkErrorShown()
+            }
+        })
 
         homeViewModel.navigateToSearchFragment.observe(viewLifecycleOwner, Observer {
             if(it){

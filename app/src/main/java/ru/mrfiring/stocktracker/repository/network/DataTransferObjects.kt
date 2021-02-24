@@ -83,7 +83,7 @@ data class CompanyProfile(
     "t": 1582641000
 }*/
 
-@JsonClass(generateAdapter = true)
+@Parcelize
 data class StockQuote(
         @Json(name = "c") val current: Double,
         @Json(name = "h") val dayHigh: Double,
@@ -91,7 +91,7 @@ data class StockQuote(
         @Json(name = "o") val dayOpen: Double,
         @Json(name = "pc") val previousDayOpen: Double,
         @Json(name = "t") val time: Double
-){
+) :Parcelable{
     fun asDatabaseObject(symbol: String): DatabaseStockQuote{
         return DatabaseStockQuote(symbol, current, dayHigh, dayLow, dayOpen, previousDayOpen, time)
     }
