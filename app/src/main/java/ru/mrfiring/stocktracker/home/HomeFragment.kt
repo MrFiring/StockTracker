@@ -35,7 +35,7 @@ class HomeFragment : Fragment() {
 
         homeViewModel.isNetworkError.observe(viewLifecycleOwner, Observer {
             if(it) {
-                Toast.makeText(context, "Network error occured.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Network error occurred.", Toast.LENGTH_SHORT).show()
                 homeViewModel.networkErrorShown()
             }
         })
