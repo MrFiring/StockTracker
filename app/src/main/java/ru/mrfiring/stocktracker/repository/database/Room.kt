@@ -15,7 +15,7 @@ interface StockDao{
     fun insertAll(stocks: List<DatabaseStockSymbol>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertQuote(item: DatabaseStockQuote)
+    fun insertAllQuotes(quotes: List<DatabaseStockQuote>)
 }
 
 @Dao
