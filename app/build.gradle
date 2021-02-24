@@ -60,6 +60,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
     implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$version_moshi"
 
     //Glide
     implementation "com.github.bumptech.glide:glide:$version_glide"
