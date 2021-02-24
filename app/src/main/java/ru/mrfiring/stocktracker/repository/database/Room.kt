@@ -3,14 +3,19 @@ package ru.mrfiring.stocktracker.repository.database
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import ru.mrfiring.stocktracker.repository.database.relations.StockSymbolAndQuote
 
 @Dao
 interface StockDao{
+    @Transaction
     @Query("select * from databasestocksymbol")
-    fun getStocks(): LiveData<List<DatabaseStockSymbol>>
+    fun getStocksAndQuotes(): LiveData<List<StockSymbolAndQuote>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(stocks: List<DatabaseStockSymbol>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertQuote(item: DatabaseStockQuote)
 }
 
 @Dao
@@ -22,22 +27,13 @@ interface CompanyDao{
     suspend fun insert(company : DatabaseCompany)
 }
 
-@Dao
-interface StockQuoteDao{
-    @Query("select * from databasestockquote where displaySymbol = :symbol")
-    suspend fun getQuote(symbol: String): DatabaseStockQuote?
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(quote: DatabaseStockQuote)
-}
 
 @Database(entities = [DatabaseStockSymbol::class,
     DatabaseCompany::class, DatabaseStockQuote::class],
-    version = 1)
+    version = 2)
 abstract class StockDatabase: RoomDatabase(){
     abstract val stockDao: StockDao
     abstract val companyDao: CompanyDao
-    abstract val stockQuoteDao: StockQuoteDao
 }
 
 private lateinit var INSTANCE: StockDatabase
@@ -45,7 +41,9 @@ fun getDatabase(context: Context): StockDatabase {
     synchronized(StockDatabase::class.java){
         if(!::INSTANCE.isInitialized){
             INSTANCE = Room.databaseBuilder(context.applicationContext,
-            StockDatabase::class.java, "stock").build()
+            StockDatabase::class.java, "stock")
+                .fallbackToDestructiveMigration()
+                .build()
         }
     }
     return INSTANCE

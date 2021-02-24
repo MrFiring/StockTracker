@@ -9,7 +9,7 @@ data class StockSymbolAndQuote(
     @Embedded val stockSymbol: DatabaseStockSymbol,
     @Relation(
         parentColumn = "displaySymbol",
-        entityColumn = "symbol"
+        entityColumn = "displaySymbol"
     )
-    val stockQuote: DatabaseStockQuote
+    val stockQuote: DatabaseStockQuote?
 )

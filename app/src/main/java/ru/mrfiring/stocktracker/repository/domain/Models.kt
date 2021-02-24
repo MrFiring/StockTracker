@@ -5,7 +5,8 @@ data class DomainStockSymbol(
         val companyName: String,
         val currentPrice: Double,
         val deltaPrice: Double,
-        val logoUrl: String
+        val logoUrl: String,
+        val quote: DomainQuote
 )
 
 data class DomainStockDetail(

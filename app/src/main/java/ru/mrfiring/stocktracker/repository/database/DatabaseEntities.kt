@@ -2,6 +2,7 @@ package ru.mrfiring.stocktracker.repository.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import ru.mrfiring.stocktracker.repository.database.relations.StockSymbolAndQuote
 import ru.mrfiring.stocktracker.repository.domain.DomainQuote
 import ru.mrfiring.stocktracker.repository.domain.DomainStockDetail
 import ru.mrfiring.stocktracker.repository.domain.DomainStockSymbol
@@ -9,7 +10,7 @@ import ru.mrfiring.stocktracker.repository.network.StockQuote
 
 @Entity
 data class DatabaseStockSymbol(
-        @PrimaryKey
+        @PrimaryKey(autoGenerate = false)
         val displaySymbol: String,
         val description: String,
         val currency: String,
@@ -20,7 +21,7 @@ data class DatabaseStockSymbol(
 
 @Entity
 data class DatabaseCompany(
-        @PrimaryKey
+        @PrimaryKey(autoGenerate = false)
         val displaySymbol: String,
 
         val exchange: String,
@@ -36,7 +37,7 @@ data class DatabaseCompany(
 
 @Entity
 data class DatabaseStockQuote(
-        @PrimaryKey
+        @PrimaryKey(autoGenerate = false)
         val displaySymbol: String,
 
         val current: Double,
@@ -47,10 +48,9 @@ data class DatabaseStockQuote(
         val time: Double
 )
 
-fun DatabaseStockSymbol.asDomainObject(
-        companyName: String,logoUrl: String, deltaPrice: Double, currentPrice: Double
+fun StockSymbolAndQuote.asDomainObject(logoUrl: String
 ): DomainStockSymbol {
-        return DomainStockSymbol(displaySymbol, companyName, currentPrice, deltaPrice, logoUrl)
+        return DomainStockSymbol(stockSymbol.displaySymbol, stockSymbol.description, stockQuote?.current ?: 0.0, 0.0, logoUrl, stockQuote?.asDomainModel() ?: DomainQuote(0.0, 0.0, 0.0, 0.0))
 }
 
 fun DatabaseCompany.asDomainObject(

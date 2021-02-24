@@ -12,14 +12,11 @@ import ru.mrfiring.stocktracker.repository.network.BASE_LOGO_URL
 import ru.mrfiring.stocktracker.repository.network.FinhubNetwork
 
 class StockRepository(private val database: StockDatabase) {
-    val symbols: LiveData<List<DomainStockSymbol>> = Transformations.map(database.stockDao.getStocks()){
+    val symbols: LiveData<List<DomainStockSymbol>> = Transformations.map(database.stockDao.getStocksAndQuotes()){
         it.map {dbStockSymbol ->
 
             dbStockSymbol.asDomainObject(
-                    dbStockSymbol.description,
-                    "${BASE_LOGO_URL}?symbol=${dbStockSymbol.displaySymbol}",
-                    0.0,
-                    0.0
+                    "${BASE_LOGO_URL}?symbol=${dbStockSymbol.stockSymbol.displaySymbol}"
             )
         }
     }
@@ -32,7 +29,7 @@ class StockRepository(private val database: StockDatabase) {
             for(symbol in stockList){
                val quote = FinhubNetwork.finhub.getStockQuote(symbol.displaySymbol)
                 Log.d("REFRESHSTOCKS", quote.toString())
-                database.stockQuoteDao.insert(quote.asDatabaseObject(symbol.displaySymbol))
+                database.stockDao.insertQuote(quote.asDatabaseObject(symbol.displaySymbol))
             }
 
         }
