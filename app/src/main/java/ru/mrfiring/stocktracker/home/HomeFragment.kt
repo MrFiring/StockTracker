@@ -33,11 +33,7 @@ class HomeFragment : Fragment() {
             Toast.makeText(context, it.companyName, Toast.LENGTH_SHORT).show()
         })
 
-        homeViewModel._response.observe(viewLifecycleOwner, Observer {
-            if(it != null){
-                Toast.makeText(context, "Count of list ${it.size}", Toast.LENGTH_LONG).show()
-            }
-        })
+
 
         homeViewModel.navigateToSearchFragment.observe(viewLifecycleOwner, Observer {
             if(it){

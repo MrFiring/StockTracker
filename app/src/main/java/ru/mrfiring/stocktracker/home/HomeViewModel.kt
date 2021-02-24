@@ -4,10 +4,14 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import ru.mrfiring.stocktracker.repository.StockRepository
 import ru.mrfiring.stocktracker.repository.database.asDomainObject
+import ru.mrfiring.stocktracker.repository.database.getDatabase
 import ru.mrfiring.stocktracker.repository.domain.DomainStockSymbol
 import ru.mrfiring.stocktracker.repository.network.FinhubNetwork
 import ru.mrfiring.stocktracker.repository.network.StockSymbol
@@ -17,10 +21,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val navigateToSearchFragment: LiveData<Boolean>
         get() = _navigateToSearchFragment
 
-    val _response = MutableLiveData<List<DomainStockSymbol>>()
+
+    private val stockRepository = StockRepository(getDatabase(application))
+    val stockList = stockRepository.symbols
 
     init{
-        getFinhubSymbols()
+        refreshDataFromRepository()
     }
 
     fun navigateToSearch(){
@@ -31,21 +37,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         _navigateToSearchFragment.value = false
     }
 
-    fun getFinhubSymbols(){
-        FinhubNetwork.finhub.getStockSymbols("US","c0lvlln48v6p8fvj0ceg").enqueue(object : Callback<List<StockSymbol>> {
-            override fun onResponse(
-                    call: Call<List<StockSymbol>>,
-                    response: Response<List<StockSymbol>>
-            ) {
-                _response.value = response.body()?.map {
-                    it.asDatabaseObject().asDomainObject("hello", "", -0.35, 130.5)
-                }
-            }
-
-            override fun onFailure(call: Call<List<StockSymbol>>, t: Throwable) {
-                _response.value = null
-            }
-        })
+    fun refreshDataFromRepository() = viewModelScope.launch {
+        stockRepository.refreshStocks()
     }
 
 
