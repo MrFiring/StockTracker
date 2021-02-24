@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import ru.mrfiring.stocktracker.repository.database.DatabaseStockQuote
 import ru.mrfiring.stocktracker.repository.database.StockDatabase
 import ru.mrfiring.stocktracker.repository.database.asDomainObject
@@ -25,16 +26,32 @@ class StockRepository(private val database: StockDatabase) {
 
     suspend fun refreshStocks(){
         withContext(Dispatchers.IO){
-            val stockList = FinhubNetwork.finhub.getStockSymbols("US")
+            var stockList = FinhubNetwork.finhub.getStockSymbols("US")
+            stockList = stockList.sortedBy {
+                it.displaySymbol
+            }
             database.stockDao.insertAll(stockList.map { it.asDatabaseObject() })
 
             val quoteList = mutableListOf<DatabaseStockQuote>()
+
+            var counter = 0
             for(symbol in stockList){
-               val quote = FinhubNetwork.finhub.getStockQuote(symbol.displaySymbol)
-                quoteList.add(quote.asDatabaseObject(symbol.displaySymbol))
-                Log.d("REFRESHSTOCKS", "${symbol.symbol} |||| ${quote.toString()}")
+                try {
+                    if(counter >= 10){
+                        database.stockDao.insertAllQuotes(quoteList)
+                        quoteList.clear()
+                        counter = 0
+                    }
+
+                    val quote = FinhubNetwork.finhub.getStockQuote(symbol.displaySymbol)
+                    quoteList.add(quote.asDatabaseObject(symbol.displaySymbol))
+                    Log.d("REFRESHSTOCKS", "${symbol.symbol} |||| ${quote.toString()}")
+                    counter++
+                }catch (httpException: HttpException){
+                    Log.e("REFRESHSTOCKS", "error ${httpException.code()}")
+                }
             }
-            database.stockDao.insertAllQuotes(quoteList)
+
         }
     }
 }

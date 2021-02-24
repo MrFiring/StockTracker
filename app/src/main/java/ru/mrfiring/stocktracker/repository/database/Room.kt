@@ -8,7 +8,7 @@ import ru.mrfiring.stocktracker.repository.database.relations.StockSymbolAndQuot
 @Dao
 interface StockDao{
     @Transaction
-    @Query("select * from databasestocksymbol")
+    @Query("select * from databasestocksymbol order by displaySymbol")
     fun getStocksAndQuotes(): LiveData<List<StockSymbolAndQuote>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
