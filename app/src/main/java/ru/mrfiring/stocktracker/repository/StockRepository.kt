@@ -1,5 +1,6 @@
 package ru.mrfiring.stocktracker.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import kotlinx.coroutines.Dispatchers
@@ -28,10 +29,11 @@ class StockRepository(private val database: StockDatabase) {
             val stockList = FinhubNetwork.finhub.getStockSymbols("US")
             database.stockDao.insertAll(stockList.map { it.asDatabaseObject() })
 
-//            for(symbol in stockList){
-//               val quote = FinhubNetwork.finhub.getStockQuote(symbol.displaySymbol)
-//                database.stockQuoteDao.insert(quote.asDatabaseObject(symbol.displaySymbol))
-//            }
+            for(symbol in stockList){
+               val quote = FinhubNetwork.finhub.getStockQuote(symbol.displaySymbol)
+                Log.d("REFRESHSTOCKS", quote.toString())
+                database.stockQuoteDao.insert(quote.asDatabaseObject(symbol.displaySymbol))
+            }
 
         }
     }
