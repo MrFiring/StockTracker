@@ -73,4 +73,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
 
+    //lib to generate missing logos
+    implementation 'com.first.avatargenerator:AvatarImageGenerator:1.4'
+
 }

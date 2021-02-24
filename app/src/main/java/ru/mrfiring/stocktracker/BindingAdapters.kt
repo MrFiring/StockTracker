@@ -4,6 +4,8 @@ import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.avatarfirst.avatargenlib.AvatarConstants
+import com.avatarfirst.avatargenlib.AvatarGenerator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ru.mrfiring.stocktracker.home.HomeRecyclerViewAdapter
@@ -15,15 +17,16 @@ fun RecyclerView.setListData(list: List<DomainStockSymbol>?){
     adpt.submitList(list)
 }
 
-@BindingAdapter("imageUrl")
-fun ImageView.bindImage(imgUrl: String?){
+@BindingAdapter("imageUrl", "name")
+fun ImageView.bindImage(imgUrl: String?, name: String?){
     imgUrl?.let {
+
         val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
         Glide.with(context)
                 .load(imgUri)
                 .apply(RequestOptions()
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .error(android.R.drawable.ic_dialog_alert))
+                    .placeholder(AvatarGenerator.avatarImage(context, 150, AvatarConstants.CIRCLE, name ?: ""))
+                )
                 .into(this)
     }
 }
