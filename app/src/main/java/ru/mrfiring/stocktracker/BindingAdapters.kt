@@ -15,7 +15,6 @@ import ru.mrfiring.stocktracker.repository.domain.DomainStockSymbol
 fun RecyclerView.setListData(list: List<DomainStockSymbol>?){
     val adpt = adapter as HomeRecyclerViewAdapter
     adpt.submitList(list)
-    scrollToPosition(0)
 }
 
 @BindingAdapter("imageUrl", "name")
