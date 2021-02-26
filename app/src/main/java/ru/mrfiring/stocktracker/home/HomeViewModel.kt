@@ -2,10 +2,7 @@ package ru.mrfiring.stocktracker.home
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,7 +25,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     get() = _isNetworkError
 
     private val stockRepository = StockRepository(getDatabase(application))
-    val stockList = stockRepository.symbols
+    val stockList = stockRepository.symbols.asLiveData()
 
     init{
         refreshDataFromRepository()

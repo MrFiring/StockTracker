@@ -3,13 +3,14 @@ package ru.mrfiring.stocktracker.repository.database
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 import ru.mrfiring.stocktracker.repository.database.relations.StockSymbolAndQuote
 
 @Dao
 interface StockDao{
     @Transaction
     @Query("select * from databasestocksymbol order by displaySymbol")
-    fun getStocksAndQuotes(): LiveData<List<StockSymbolAndQuote>>
+    fun getStocksAndQuotes(): Flow<List<StockSymbolAndQuote>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(stocks: List<DatabaseStockSymbol>)
