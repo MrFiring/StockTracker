@@ -1,6 +1,7 @@
 package ru.mrfiring.stocktracker.home
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -49,6 +50,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         try {
             stockRepository.refreshStocks()
         }catch (ex: IOException){
+            Log.e("refresh", "NETWORK TROUBLE: ${ex.stackTraceToString()}")
             _isNetworkError.value = true
         }
     }
