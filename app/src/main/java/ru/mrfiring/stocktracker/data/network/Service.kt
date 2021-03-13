@@ -1,7 +1,5 @@
 package ru.mrfiring.stocktracker.data.network
 
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -27,14 +25,4 @@ interface StockService{
             @Query("symbol") symbol: String,
             @Query("token") token: String = TOKEN
     ): StockQuote
-}
-
-object FinhubNetwork{
-
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(MoshiConverterFactory.create())
-        .build()
-
-    val finhub = retrofit.create(StockService::class.java)
 }

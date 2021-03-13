@@ -1,6 +1,5 @@
 package ru.mrfiring.stocktracker.data.database
 
-import android.content.Context
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import ru.mrfiring.stocktracker.data.database.relations.StockSymbolAndQuote
@@ -36,15 +35,3 @@ abstract class StockDatabase: RoomDatabase(){
     abstract val companyDao: CompanyDao
 }
 
-private lateinit var INSTANCE: StockDatabase
-fun getDatabase(context: Context): StockDatabase {
-    synchronized(StockDatabase::class.java){
-        if(!::INSTANCE.isInitialized){
-            INSTANCE = Room.databaseBuilder(context.applicationContext,
-            StockDatabase::class.java, "stock")
-                .fallbackToDestructiveMigration()
-                .build()
-        }
-    }
-    return INSTANCE
-}
