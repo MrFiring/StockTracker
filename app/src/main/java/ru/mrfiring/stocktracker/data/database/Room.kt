@@ -10,6 +10,9 @@ interface StockDao{
     @Query("select * from databasestocksymbol order by displaySymbol")
     fun getStocksAndQuotes(): Flow<List<StockSymbolAndQuote>>
 
+    @Query("select count(*) from databasestocksymbol")
+    suspend fun getStocksAndQuotesCount(): Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(stocks: List<DatabaseStockSymbol>)
 

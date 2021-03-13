@@ -29,12 +29,14 @@ class StockRepositoryImpl @Inject constructor(
 
     override suspend fun refreshStocks() {
         withContext(Dispatchers.IO) {
-            val symbolsList: List<StockSymbol> = stockService.getStockSymbols()
-            stockDao.insertAll(
-                symbolsList.map {
-                    it.asDatabaseObject()
-                }
-            )
+            if (stockDao.getStocksAndQuotesCount() == 0) {
+                val symbolsList: List<StockSymbol> = stockService.getStockSymbols()
+                stockDao.insertAll(
+                    symbolsList.map {
+                        it.asDatabaseObject()
+                    }
+                )
+            }
         }
 
     }
