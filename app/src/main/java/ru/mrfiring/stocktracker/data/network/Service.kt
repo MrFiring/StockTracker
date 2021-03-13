@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 private const val TOKEN = "c0lvlln48v6p8fvj0ceg"
-private const val BASE_URL = "https://finnhub.io/api/v1/"
+const val BASE_URL = "https://finnhub.io/api/v1/"
 const val BASE_LOGO_URL = "https://finnhub.io/api/logo"
 
 interface StockService{
