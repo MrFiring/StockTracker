@@ -1,18 +1,11 @@
-package ru.mrfiring.stocktracker.home
+package ru.mrfiring.stocktracker.presentation.home
 
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import ru.mrfiring.stocktracker.repository.StockRepository
-import ru.mrfiring.stocktracker.repository.database.asDomainObject
-import ru.mrfiring.stocktracker.repository.database.getDatabase
-import ru.mrfiring.stocktracker.repository.domain.DomainStockSymbol
-import ru.mrfiring.stocktracker.repository.network.FinhubNetwork
-import ru.mrfiring.stocktracker.repository.network.StockSymbol
+import ru.mrfiring.stocktracker.domain.StockRepository
+import ru.mrfiring.stocktracker.data.database.getDatabase
 import java.io.IOException
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {

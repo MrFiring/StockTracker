@@ -1,12 +1,12 @@
-package ru.mrfiring.stocktracker.repository.network
+package ru.mrfiring.stocktracker.data.network
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
-import ru.mrfiring.stocktracker.repository.database.DatabaseCompany
-import ru.mrfiring.stocktracker.repository.database.DatabaseStockQuote
-import ru.mrfiring.stocktracker.repository.database.DatabaseStockSymbol
+import ru.mrfiring.stocktracker.data.database.DatabaseCompany
+import ru.mrfiring.stocktracker.data.database.DatabaseStockQuote
+import ru.mrfiring.stocktracker.data.database.DatabaseStockSymbol
 import java.util.function.LongToDoubleFunction
 
 /*[
@@ -32,7 +32,7 @@ data class StockSymbol(
     val symbol: String,
     val type: String
 ){
-    fun asDatabaseObject(): DatabaseStockSymbol{
+    fun asDatabaseObject(): DatabaseStockSymbol {
         return DatabaseStockSymbol(displaySymbol, description, currency, figi, mic, type)
     }
 }
@@ -69,7 +69,7 @@ data class CompanyProfile(
     @Json(name = "logo") val logoUrl: String,
     val finhubIndustry: String
 ){
-    fun asDatabaseObject(symbol: String): DatabaseCompany{
+    fun asDatabaseObject(symbol: String): DatabaseCompany {
         return DatabaseCompany(symbol, exchange, ipo, marketCapitalization, name, phone, shareOutStanding, webUrl, logoUrl, finhubIndustry)
     }
 }
@@ -93,7 +93,7 @@ data class StockQuote(
         @Json(name = "pc") val previousDayOpen: Double,
         @Json(name = "t") val time: Double
 ){
-    fun asDatabaseObject(symbol: String): DatabaseStockQuote{
+    fun asDatabaseObject(symbol: String): DatabaseStockQuote {
         return DatabaseStockQuote(symbol, current, dayHigh, dayLow, dayOpen, previousDayOpen, time.toDouble())
     }
 }

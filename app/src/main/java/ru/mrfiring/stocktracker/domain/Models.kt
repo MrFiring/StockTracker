@@ -1,4 +1,4 @@
-package ru.mrfiring.stocktracker.repository.domain
+package ru.mrfiring.stocktracker.domain
 
 data class DomainStockSymbol(
         val symbol: String,

@@ -1,12 +1,11 @@
-package ru.mrfiring.stocktracker.repository.database
+package ru.mrfiring.stocktracker.data.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.mrfiring.stocktracker.repository.database.relations.StockSymbolAndQuote
-import ru.mrfiring.stocktracker.repository.domain.DomainQuote
-import ru.mrfiring.stocktracker.repository.domain.DomainStockDetail
-import ru.mrfiring.stocktracker.repository.domain.DomainStockSymbol
-import ru.mrfiring.stocktracker.repository.network.StockQuote
+import ru.mrfiring.stocktracker.data.database.relations.StockSymbolAndQuote
+import ru.mrfiring.stocktracker.domain.DomainQuote
+import ru.mrfiring.stocktracker.domain.DomainStockDetail
+import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 
 @Entity
 data class DatabaseStockSymbol(
@@ -54,7 +53,8 @@ fun StockSymbolAndQuote.asDomainObject(logoUrl: String
 }
 
 fun DatabaseCompany.asDomainObject(
-        quote: DomainQuote): DomainStockDetail
+        quote: DomainQuote
+): DomainStockDetail
 = DomainStockDetail(displaySymbol, exchange, marketCapitalization,
 name, phone, shareOutStanding, finhubIndustry, quote)
 

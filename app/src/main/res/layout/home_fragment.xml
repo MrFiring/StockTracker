@@ -6,7 +6,7 @@
     <data>
         <variable
             name="homeViewModel"
-            type="ru.mrfiring.stocktracker.home.HomeViewModel" />
+            type="ru.mrfiring.stocktracker.presentation.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

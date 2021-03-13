@@ -1,4 +1,4 @@
-package ru.mrfiring.stocktracker.search
+package ru.mrfiring.stocktracker.presentation.search
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle

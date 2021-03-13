@@ -1,4 +1,4 @@
-package ru.mrfiring.stocktracker.home
+package ru.mrfiring.stocktracker.presentation.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,9 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.mrfiring.stocktracker.databinding.StockListItemBinding
-import ru.mrfiring.stocktracker.repository.domain.DomainStockSymbol
+import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 
-class HomeRecyclerViewAdapter(val clickListener: HomeRecyclerViewAdapter.ClickListener) : ListAdapter<DomainStockSymbol, HomeRecyclerViewAdapter.StockViewHolder>(StockSymbolDiffCallback()) {
+class HomeRecyclerViewAdapter(val clickListener: ClickListener) : ListAdapter<DomainStockSymbol, HomeRecyclerViewAdapter.StockViewHolder>(
+    StockSymbolDiffCallback()
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockViewHolder {
         return StockViewHolder.from(parent)
@@ -27,7 +29,7 @@ class HomeRecyclerViewAdapter(val clickListener: HomeRecyclerViewAdapter.ClickLi
         }
 
         companion object{
-            fun from(parent: ViewGroup): StockViewHolder{
+            fun from(parent: ViewGroup): StockViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = StockListItemBinding.inflate(layoutInflater, parent, false)
 

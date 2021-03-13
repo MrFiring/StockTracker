@@ -1,7 +1,5 @@
-package ru.mrfiring.stocktracker.repository.network
+package ru.mrfiring.stocktracker.data.network
 
-import kotlinx.coroutines.Deferred
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET

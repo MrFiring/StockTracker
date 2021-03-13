@@ -1,10 +1,10 @@
-package ru.mrfiring.stocktracker.repository.database
+package ru.mrfiring.stocktracker.data.database
 
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import ru.mrfiring.stocktracker.repository.database.relations.StockSymbolAndQuote
+import ru.mrfiring.stocktracker.data.database.relations.StockSymbolAndQuote
 
 @Dao
 interface StockDao{

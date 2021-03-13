@@ -1,26 +1,21 @@
-package ru.mrfiring.stocktracker.repository
+package ru.mrfiring.stocktracker.domain
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import ru.mrfiring.stocktracker.repository.database.DatabaseStockQuote
-import ru.mrfiring.stocktracker.repository.database.StockDatabase
-import ru.mrfiring.stocktracker.repository.database.asDomainObject
-import ru.mrfiring.stocktracker.repository.domain.DomainStockSymbol
-import ru.mrfiring.stocktracker.repository.network.BASE_LOGO_URL
-import ru.mrfiring.stocktracker.repository.network.FinhubNetwork
-import ru.mrfiring.stocktracker.repository.network.StockQuote
-import java.util.*
+import ru.mrfiring.stocktracker.data.database.DatabaseStockQuote
+import ru.mrfiring.stocktracker.data.database.StockDatabase
+import ru.mrfiring.stocktracker.data.database.asDomainObject
+import ru.mrfiring.stocktracker.data.network.BASE_LOGO_URL
+import ru.mrfiring.stocktracker.data.network.FinhubNetwork
 
 class StockRepository(private val database: StockDatabase) {
     val symbols: Flow<List<DomainStockSymbol>> = database.stockDao.getStocksAndQuotes().map {
         it.map { dbItem ->
-            dbItem.asDomainObject("${BASE_LOGO_URL}?symbol=${dbItem.stockSymbol.displaySymbol}")
+            dbItem.asDomainObject("$BASE_LOGO_URL?symbol=${dbItem.stockSymbol.displaySymbol}")
         }
     }
 

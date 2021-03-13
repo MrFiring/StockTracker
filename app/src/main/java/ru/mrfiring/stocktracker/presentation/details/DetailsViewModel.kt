@@ -1,4 +1,4 @@
-package ru.mrfiring.stocktracker.details
+package ru.mrfiring.stocktracker.presentation.details
 
 import androidx.lifecycle.ViewModel
 

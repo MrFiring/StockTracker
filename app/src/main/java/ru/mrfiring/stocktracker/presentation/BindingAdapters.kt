@@ -8,8 +8,8 @@ import com.avatarfirst.avatargenlib.AvatarConstants
 import com.avatarfirst.avatargenlib.AvatarGenerator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import ru.mrfiring.stocktracker.home.HomeRecyclerViewAdapter
-import ru.mrfiring.stocktracker.repository.domain.DomainStockSymbol
+import ru.mrfiring.stocktracker.presentation.home.HomeRecyclerViewAdapter
+import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 
 @BindingAdapter("listData")
 fun RecyclerView.setListData(list: List<DomainStockSymbol>?){

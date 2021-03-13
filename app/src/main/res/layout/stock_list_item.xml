@@ -6,10 +6,10 @@
     <data>
         <variable
             name="stockSymbol"
-            type="ru.mrfiring.stocktracker.repository.domain.DomainStockSymbol" />
+            type="ru.mrfiring.stocktracker.domain.DomainStockSymbol" />
         <variable
             name="clickListener"
-            type="ru.mrfiring.stocktracker.home.HomeRecyclerViewAdapter.ClickListener" />
+            type="ru.mrfiring.stocktracker.presentation.home.HomeRecyclerViewAdapter.ClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -79,12 +79,12 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="130.05$" />
 
+<!--                android:text="@{String.valueOf(stockSymbol.getCalcDelta()) + '|' + String.valueOf(stockSymbol.getCalcDeltaInPercent())}"-->
                 <TextView
                     android:id="@+id/deltaPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:text="@{String.valueOf(stockSymbol.deltaPrice)}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/currentPrice"

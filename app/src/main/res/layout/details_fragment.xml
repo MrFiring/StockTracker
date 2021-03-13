@@ -5,7 +5,7 @@
     <data>
         <variable
             name="detailsViewModel"
-            type="ru.mrfiring.stocktracker.details.DetailsViewModel" />
+            type="ru.mrfiring.stocktracker.presentation.details.DetailsViewModel" />
     </data>
 
     <TextView

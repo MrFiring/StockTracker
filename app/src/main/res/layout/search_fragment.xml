@@ -5,7 +5,7 @@
     <data>
         <variable
             name="searchViewModel"
-            type="ru.mrfiring.stocktracker.search.SearchViewModel" />
+            type="ru.mrfiring.stocktracker.presentation.search.SearchViewModel" />
     </data>
 
     <TextView

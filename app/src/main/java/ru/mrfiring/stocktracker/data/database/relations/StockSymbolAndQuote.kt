@@ -1,9 +1,9 @@
-package ru.mrfiring.stocktracker.repository.database.relations
+package ru.mrfiring.stocktracker.data.database.relations
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import ru.mrfiring.stocktracker.repository.database.DatabaseStockQuote
-import ru.mrfiring.stocktracker.repository.database.DatabaseStockSymbol
+import ru.mrfiring.stocktracker.data.database.DatabaseStockQuote
+import ru.mrfiring.stocktracker.data.database.DatabaseStockSymbol
 
 data class StockSymbolAndQuote(
     @Embedded val stockSymbol: DatabaseStockSymbol,
