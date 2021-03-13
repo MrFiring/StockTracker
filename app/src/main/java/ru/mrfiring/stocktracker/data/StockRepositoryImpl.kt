@@ -1,17 +1,19 @@
 package ru.mrfiring.stocktracker.data
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import ru.mrfiring.stocktracker.data.database.StockDao
-import ru.mrfiring.stocktracker.data.database.StockDatabase
 import ru.mrfiring.stocktracker.data.database.asDomainObject
 import ru.mrfiring.stocktracker.data.network.BASE_LOGO_URL
 import ru.mrfiring.stocktracker.data.network.StockService
 import ru.mrfiring.stocktracker.data.network.StockSymbol
 import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 import ru.mrfiring.stocktracker.domain.StockRepository
+import javax.inject.Inject
 
-class StockRepositoryImpl(
+class StockRepositoryImpl @Inject constructor(
     private val stockDao: StockDao,
     private val stockService: StockService
 ) : StockRepository {
@@ -26,11 +28,14 @@ class StockRepositoryImpl(
     }
 
     override suspend fun refreshStocks() {
-        val symbolsList: List<StockSymbol> = stockService.getStockSymbols()
-        stockDao.insertAll(
-            symbolsList.map {
-                it.asDatabaseObject()
-            }
-        )
+        withContext(Dispatchers.IO) {
+            val symbolsList: List<StockSymbol> = stockService.getStockSymbols()
+            stockDao.insertAll(
+                symbolsList.map {
+                    it.asDatabaseObject()
+                }
+            )
+        }
+
     }
 }
