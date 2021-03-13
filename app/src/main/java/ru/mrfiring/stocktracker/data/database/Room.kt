@@ -1,7 +1,6 @@
 package ru.mrfiring.stocktracker.data.database
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import ru.mrfiring.stocktracker.data.database.relations.StockSymbolAndQuote
@@ -25,7 +24,7 @@ interface CompanyDao{
     suspend fun getCompany(symbol: String): DatabaseCompany?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(company : DatabaseCompany)
+    suspend fun insertCompany(company: DatabaseCompany)
 }
 
 

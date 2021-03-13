@@ -8,10 +8,11 @@ import retrofit2.http.Query
 private const val TOKEN = "c0lvlln48v6p8fvj0ceg"
 private const val BASE_URL = "https://finnhub.io/api/v1/"
 const val BASE_LOGO_URL = "https://finnhub.io/api/logo"
+
 interface StockService{
     @GET("stock/symbol")
     suspend fun getStockSymbols(
-        @Query("exchange") exchange: String,
+        @Query("exchange") exchange: String = "US",
         @Query("token") token: String = TOKEN
     ) : List<StockSymbol>
 
