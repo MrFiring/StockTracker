@@ -24,7 +24,8 @@ class HomeViewModel @Inject constructor(
     val isNetworkError
         get() = _isNetworkError
 
-    private var _stocks = MutableLiveData<List<DomainStockSymbol>>()
+    private var _stocks: LiveData<List<DomainStockSymbol>> =
+        getStocksAndQuotesFlowUseCase().asLiveData(viewModelScope.coroutineContext)
     val stocks: LiveData<List<DomainStockSymbol>>
         get() = _stocks
 
@@ -44,13 +45,10 @@ class HomeViewModel @Inject constructor(
         _isNetworkError.value = false
     }
 
-    fun refreshDataFromRepository() = viewModelScope.launch {
+    private fun refreshDataFromRepository() = viewModelScope.launch {
         try {
             refreshStocksUseCase()
-            _stocks =
-                getStocksAndQuotesFlowUseCase().asLiveData() as MutableLiveData<List<DomainStockSymbol>>
-
-        }catch (ex: IOException){
+        } catch (ex: IOException) {
             Log.e("refresh", "NETWORK TROUBLE: ${ex.stackTraceToString()}")
             _isNetworkError.value = true
         }
