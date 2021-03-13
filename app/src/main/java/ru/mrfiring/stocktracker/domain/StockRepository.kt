@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface StockRepository {
 
-    suspend fun getStocksAndQuotesFlow(): Flow<List<DomainStockSymbol>>
+    fun getStocksAndQuotesFlow(): Flow<List<DomainStockSymbol>>
 
     suspend fun refreshStocks()
 }

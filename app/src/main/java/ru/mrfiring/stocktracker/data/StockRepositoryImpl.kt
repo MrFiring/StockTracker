@@ -17,7 +17,7 @@ class StockRepositoryImpl @Inject constructor(
     private val stockDao: StockDao,
     private val stockService: StockService
 ) : StockRepository {
-    override suspend fun getStocksAndQuotesFlow(): Flow<List<DomainStockSymbol>> {
+    override fun getStocksAndQuotesFlow(): Flow<List<DomainStockSymbol>> {
         return stockDao.getStocksAndQuotes().map {
             it.map { symbol ->
                 symbol.asDomainObject(
