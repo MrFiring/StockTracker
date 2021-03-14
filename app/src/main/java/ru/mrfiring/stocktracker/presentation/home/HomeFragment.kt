@@ -41,7 +41,6 @@ class HomeFragment : Fragment() {
         homeViewModel.isNetworkError.observe(viewLifecycleOwner, Observer {
             if (it) {
                 Toast.makeText(context, "Network error occurred.", Toast.LENGTH_SHORT).show()
-                homeViewModel.networkErrorShown()
             }
         })
 
@@ -49,7 +48,6 @@ class HomeFragment : Fragment() {
             if (it) {
                 this.findNavController()
                     .navigate(HomeFragmentDirections.actionHomeFragmentToSearchFragment())
-                homeViewModel.navigateToSearchCompleted()
             }
         })
 

@@ -2,8 +2,12 @@ package ru.mrfiring.stocktracker.presentation.home
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.mrfiring.stocktracker.SingleLiveEvent
 import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 import ru.mrfiring.stocktracker.domain.GetStocksAndQuotesFlowUseCase
 import ru.mrfiring.stocktracker.domain.RefreshStocksUseCase
@@ -16,11 +20,11 @@ class HomeViewModel @Inject constructor(
     private val getStocksAndQuotesFlowUseCase: GetStocksAndQuotesFlowUseCase,
     private val refreshStocksUseCase: RefreshStocksUseCase
 ) : AndroidViewModel(application) {
-    private val _navigateToSearchFragment = MutableLiveData<Boolean>()
+    private val _navigateToSearchFragment = SingleLiveEvent<Boolean>()
     val navigateToSearchFragment: LiveData<Boolean>
         get() = _navigateToSearchFragment
 
-    private val _isNetworkError = MutableLiveData<Boolean>()
+    private val _isNetworkError = SingleLiveEvent<Boolean>()
     val isNetworkError
         get() = _isNetworkError
 
@@ -35,14 +39,6 @@ class HomeViewModel @Inject constructor(
 
     fun navigateToSearch() {
         _navigateToSearchFragment.value = true
-    }
-
-    fun navigateToSearchCompleted() {
-        _navigateToSearchFragment.value = false
-    }
-
-    fun networkErrorShown(){
-        _isNetworkError.value = false
     }
 
     private fun refreshDataFromRepository() = viewModelScope.launch {
