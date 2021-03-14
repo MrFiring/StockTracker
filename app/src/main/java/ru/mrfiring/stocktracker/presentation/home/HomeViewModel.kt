@@ -34,14 +34,14 @@ class HomeViewModel @Inject constructor(
         get() = _stocks
 
     init {
-        refreshDataFromRepository()
+        refreshStocks()
     }
 
     fun navigateToSearch() {
         _navigateToSearchFragment.value = true
     }
 
-    private fun refreshDataFromRepository() = viewModelScope.launch {
+    private fun refreshStocks() = viewModelScope.launch {
         try {
             refreshStocksUseCase()
         } catch (ex: IOException) {
