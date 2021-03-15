@@ -1,5 +1,6 @@
 package ru.mrfiring.stocktracker.data
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -53,8 +54,12 @@ class StockRepositoryImpl @Inject constructor(
                 )
 
                 //Insert every 40 items into db
-                if (index % 40 == 0) {
+                if (index % 20 == 0) {
                     stockDao.insertAllQuotes(quotesTemp)
+                    Log.e(
+                        "RepositoryStock",
+                        "INSERTED ${quotesTemp.first().displaySymbol} ${quotesTemp.last().displaySymbol}"
+                    )
                     quotesTemp.clear()
                 }
             }
