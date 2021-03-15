@@ -1,13 +1,10 @@
 package ru.mrfiring.stocktracker.data.network
 
-import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import kotlinx.android.parcel.Parcelize
 import ru.mrfiring.stocktracker.data.database.DatabaseCompany
 import ru.mrfiring.stocktracker.data.database.DatabaseStockQuote
 import ru.mrfiring.stocktracker.data.database.DatabaseStockSymbol
-import java.util.function.LongToDoubleFunction
 
 /*[
    {
@@ -94,7 +91,7 @@ data class StockQuote(
         @Json(name = "t") val time: Double
 ){
     fun asDatabaseObject(symbol: String): DatabaseStockQuote {
-        return DatabaseStockQuote(symbol, current, dayHigh, dayLow, dayOpen, previousDayOpen, time.toDouble())
+        return DatabaseStockQuote(symbol, current, dayHigh, dayLow, dayOpen, previousDayOpen, time)
     }
 }
 

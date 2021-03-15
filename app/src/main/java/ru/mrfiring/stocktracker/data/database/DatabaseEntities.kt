@@ -53,9 +53,8 @@ fun StockSymbolAndQuote.asDomainObject(
     return DomainStockSymbol(
         stockSymbol.displaySymbol,
         stockSymbol.description,
-        stockQuote?.current ?: 0.0,
-        0.0, logoUrl,
-        stockQuote?.asDomainModel() ?: DomainQuote(0.0, 0.0, 0.0, 0.0)
+        logoUrl,
+        stockQuote?.asDomainModel() ?: DomainQuote(0.0, 0.0, 0.0, 0.0, 0.0)
     )
 }
 
@@ -67,4 +66,4 @@ fun DatabaseCompany.asDomainObject(
 )
 
 fun DatabaseStockQuote.asDomainModel(): DomainQuote =
-    DomainQuote(dayHigh, dayLow, dayOpen, previousDayOpen)
+    DomainQuote(current, dayHigh, dayLow, dayOpen, previousDayOpen)

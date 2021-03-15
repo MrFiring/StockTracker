@@ -1,12 +1,10 @@
 package ru.mrfiring.stocktracker.domain
 
 data class DomainStockSymbol(
-        val symbol: String,
-        val companyName: String,
-        val currentPrice: Double,
-        val deltaPrice: Double,
-        val logoUrl: String,
-        val quote: DomainQuote
+    val symbol: String,
+    val companyName: String,
+    val logoUrl: String,
+    val quote: DomainQuote
 )
 
 data class DomainStockDetail(
@@ -22,8 +20,12 @@ data class DomainStockDetail(
 )
 
 data class DomainQuote(
-        val dayHigh: Double,
-        val dayLow: Double,
-        val dayOpen: Double,
-        val previousDayOpen: Double
-)
+    val current: Double,
+    val dayHigh: Double,
+    val dayLow: Double,
+    val dayOpen: Double,
+    val previousDayOpen: Double
+) {
+    fun getDeltaPrice(): Double = dayOpen - dayHigh
+    fun getDeltaPricePercent(): Double = (dayOpen - dayHigh) / dayOpen
+}

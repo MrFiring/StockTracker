@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">StockTracker</string>
+    <string name="delta_price_format">%1$.2f | %2$.2f</string>
 </resources>
