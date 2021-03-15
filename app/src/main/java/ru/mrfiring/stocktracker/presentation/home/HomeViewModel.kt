@@ -4,11 +4,9 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.mrfiring.stocktracker.SingleLiveEvent
-import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 import ru.mrfiring.stocktracker.domain.GetStocksAndQuotesFlowUseCase
 import ru.mrfiring.stocktracker.domain.RefreshQuotesUseCase
 import ru.mrfiring.stocktracker.domain.RefreshStocksUseCase
@@ -30,10 +28,10 @@ class HomeViewModel @Inject constructor(
     val isNetworkError
         get() = _isNetworkError
 
-    private var _stocks: LiveData<List<DomainStockSymbol>> =
-        getStocksAndQuotesFlowUseCase().asLiveData(viewModelScope.coroutineContext)
-    val stocks: LiveData<List<DomainStockSymbol>>
-        get() = _stocks
+//    private var _stocks: LiveData<List<DomainStockSymbol>> =
+//        getStocksAndQuotesFlowUseCase().asLiveData(viewModelScope.coroutineContext)
+//    val stocks: LiveData<List<DomainStockSymbol>>
+//        get() = _stocks
 
     init {
         refreshStocks()
@@ -52,6 +50,8 @@ class HomeViewModel @Inject constructor(
             _isNetworkError.value = true
         }
     }
+
+    fun getStocksFlow() = getStocksAndQuotesFlowUseCase()
 
 
 }
