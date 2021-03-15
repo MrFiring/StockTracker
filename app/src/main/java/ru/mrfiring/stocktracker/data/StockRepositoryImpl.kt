@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import ru.mrfiring.stocktracker.data.database.DatabaseStockQuote
 import ru.mrfiring.stocktracker.data.database.StockDao
 import ru.mrfiring.stocktracker.data.database.asDomainObject
 import ru.mrfiring.stocktracker.data.network.BASE_LOGO_URL
@@ -39,5 +40,24 @@ class StockRepositoryImpl @Inject constructor(
             }
         }
 
+    }
+
+    override suspend fun refreshQuotes() {
+        withContext(Dispatchers.IO) {
+            val symbols = stockDao.getTickerList()
+            val quotesTemp: MutableList<DatabaseStockQuote> = mutableListOf()
+            symbols.forEachIndexed { index, symbol ->
+                quotesTemp.add(
+                    stockService.getStockQuote(symbol)
+                        .asDatabaseObject(symbol)
+                )
+
+                //Insert every 40 items into db
+                if (index % 40 == 0) {
+                    stockDao.insertAllQuotes(quotesTemp)
+                    quotesTemp.clear()
+                }
+            }
+        }
     }
 }
