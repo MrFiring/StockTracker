@@ -10,7 +10,7 @@ interface StockDao{
     @Query("select * from databasestocksymbol order by displaySymbol")
     fun getStocksAndQuotes(): Flow<List<StockSymbolAndQuote>>
 
-    @Query("select displaySymbol from databasestocksymbol")
+    @Query("select displaySymbol from databasestocksymbol order by displaySymbol")
     suspend fun getTickerList(): List<String>
 
     @Query("select count(*) from databasestocksymbol")
