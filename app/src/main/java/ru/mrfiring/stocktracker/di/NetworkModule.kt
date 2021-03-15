@@ -23,7 +23,7 @@ object NetworkModule {
             .addInterceptor {
                 val response = it.proceed(it.request())
                 if (!response.isSuccessful && response.code() == 429) {
-                    Thread.sleep(1000)
+                    Thread.sleep(3000)
                     Log.e("HttpClient", "Error 429 caught")
                     response.close()
                     it.proceed(it.request())
