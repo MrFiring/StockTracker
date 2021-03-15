@@ -25,9 +25,10 @@ object NetworkModule {
                 if (!response.isSuccessful && response.code() == 429) {
                     Thread.sleep(1000)
                     Log.e("HttpClient", "Error 429 caught")
+                    response.close()
                     it.proceed(it.request())
                 } else {
-                    it.proceed(it.request())
+                    response
                 }
             }
             .build()
