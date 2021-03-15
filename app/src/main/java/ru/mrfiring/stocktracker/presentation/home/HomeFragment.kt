@@ -28,11 +28,15 @@ class HomeFragment : Fragment() {
             false
         )
 
+        val recyclerAdapter = HomeRecyclerViewAdapter(HomeRecyclerViewAdapter.ClickListener {
+            Toast.makeText(context, it.companyName, Toast.LENGTH_SHORT).show()
+        })
 
-        binding.stockList.adapter =
-            HomeRecyclerViewAdapter(HomeRecyclerViewAdapter.ClickListener() {
-                Toast.makeText(context, it.companyName, Toast.LENGTH_SHORT).show()
-            })
+        binding.stockList.adapter = recyclerAdapter
+
+        homeViewModel.stocks.observe(viewLifecycleOwner, Observer {
+            recyclerAdapter.submitList(it)
+        })
 
         homeViewModel.isNetworkError.observe(viewLifecycleOwner, Observer {
             if (it) {
