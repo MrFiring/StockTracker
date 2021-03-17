@@ -7,11 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import ru.mrfiring.stocktracker.databinding.HomeFragmentBinding
 import javax.inject.Inject
 
@@ -37,11 +34,9 @@ class HomeFragment : Fragment() {
 
         binding.stockList.adapter = recyclerAdapter
 
-        homeViewModel.viewModelScope.launch {
-            homeViewModel.getStocksFlow().collect {
-                recyclerAdapter.submitList(it)
-            }
-        }
+        homeViewModel.stocks.observe(viewLifecycleOwner, Observer {
+            recyclerAdapter.submitList(it)
+        })
 
         homeViewModel.isNetworkError.observe(viewLifecycleOwner, Observer {
             if (it) {
