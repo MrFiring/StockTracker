@@ -1,14 +1,14 @@
 package ru.mrfiring.stocktracker.data.database
 
+import androidx.paging.PagingSource
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
 import ru.mrfiring.stocktracker.data.database.relations.StockSymbolAndQuote
 
 @Dao
 interface StockDao{
     @Transaction
     @Query("select * from databasestocksymbol order by displaySymbol")
-    fun getStocksAndQuotes(): Flow<List<StockSymbolAndQuote>>
+    fun getStocksAndQuotes(): PagingSource<Int, StockSymbolAndQuote>
 
     @Query("select displaySymbol from databasestocksymbol order by displaySymbol")
     suspend fun getTickerList(): List<String>
