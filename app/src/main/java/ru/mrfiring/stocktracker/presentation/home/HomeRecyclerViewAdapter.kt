@@ -4,8 +4,8 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.net.toUri
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.avatarfirst.avatargenlib.AvatarConstants
 import com.avatarfirst.avatargenlib.AvatarGenerator
@@ -16,7 +16,7 @@ import ru.mrfiring.stocktracker.databinding.StockListItemBinding
 import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 
 class HomeRecyclerViewAdapter(private val clickListener: ClickListener) :
-    ListAdapter<DomainStockSymbol, HomeRecyclerViewAdapter.StockViewHolder>(
+    PagingDataAdapter<DomainStockSymbol, HomeRecyclerViewAdapter.StockViewHolder>(
         StockSymbolDiffCallback()
     ) {
 
@@ -26,7 +26,9 @@ class HomeRecyclerViewAdapter(private val clickListener: ClickListener) :
 
     override fun onBindViewHolder(holder: StockViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item, clickListener)
+        item?.let {
+            holder.bind(it, clickListener)
+        }
     }
 
     class StockViewHolder private constructor(

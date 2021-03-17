@@ -1,12 +1,13 @@
 package ru.mrfiring.stocktracker.domain
 
-import kotlinx.coroutines.flow.Flow
+import androidx.lifecycle.LiveData
+import androidx.paging.PagingData
 import javax.inject.Inject
 
-class GetStocksAndQuotesFlowUseCase @Inject constructor(
+class GetStocksAndQuotesLiveDataCase @Inject constructor(
     private val stockRepository: StockRepository
 ) {
-    operator fun invoke(): Flow<List<DomainStockSymbol>> {
-        return stockRepository.getStocksAndQuotesFlow()
+    operator fun invoke(): LiveData<PagingData<DomainStockSymbol>> {
+        return stockRepository.getStocksAndQuotesLiveData()
     }
 }

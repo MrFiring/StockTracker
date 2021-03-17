@@ -1,12 +1,11 @@
 package ru.mrfiring.stocktracker.domain
 
-import kotlinx.coroutines.flow.Flow
+import androidx.lifecycle.LiveData
+import androidx.paging.PagingData
 
 interface StockRepository {
 
-    fun getStocksAndQuotesFlow(): Flow<List<DomainStockSymbol>>
-
-    suspend fun refreshStocks()
+    fun getStocksAndQuotesLiveData(): LiveData<PagingData<DomainStockSymbol>>
 
     suspend fun refreshQuotes()
 

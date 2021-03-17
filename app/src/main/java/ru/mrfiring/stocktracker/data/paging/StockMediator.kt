@@ -4,9 +4,11 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import ru.mrfiring.stocktracker.data.database.DatabaseStockSymbol
 import ru.mrfiring.stocktracker.data.database.StockDao
+import ru.mrfiring.stocktracker.data.database.relations.StockSymbolAndQuote
 import ru.mrfiring.stocktracker.data.network.StockService
 import java.io.IOException
 import javax.inject.Inject
@@ -15,10 +17,10 @@ import javax.inject.Inject
 class StockMediator @Inject constructor(
     private val stockDao: StockDao,
     private val stockService: StockService
-) : RemoteMediator<Int, DatabaseStockSymbol>() {
+) : RemoteMediator<Int, StockSymbolAndQuote>() {
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, DatabaseStockSymbol>
+        state: PagingState<Int, StockSymbolAndQuote>
     ): MediatorResult {
         when (loadType) {
             LoadType.REFRESH -> {
@@ -28,11 +30,13 @@ class StockMediator @Inject constructor(
                 }
 
                 return try {
-                    val symbolsList = stockService.getStockSymbols()
 
-                    stockDao.insertAll(symbolsList.map {
-                        it.asDatabaseObject()
-                    })
+                    withContext(Dispatchers.IO) {
+                        val symbolsList = stockService.getStockSymbols()
+                        stockDao.insertAll(symbolsList.map {
+                            it.asDatabaseObject()
+                        })
+                    }
 
                     MediatorResult.Success(endOfPaginationReached = false)
                 } catch (ex: IOException) {

@@ -1,42 +1,43 @@
 package ru.mrfiring.stocktracker.data
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
+import androidx.paging.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import ru.mrfiring.stocktracker.data.database.DatabaseStockQuote
 import ru.mrfiring.stocktracker.data.database.StockDao
 import ru.mrfiring.stocktracker.data.database.asDomainObject
 import ru.mrfiring.stocktracker.data.network.BASE_LOGO_URL
 import ru.mrfiring.stocktracker.data.network.StockService
-import ru.mrfiring.stocktracker.data.network.StockSymbol
+import ru.mrfiring.stocktracker.data.paging.StockMediator
 import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 import ru.mrfiring.stocktracker.domain.StockRepository
 import javax.inject.Inject
 
-class StockRepositoryImpl @Inject constructor(
+class StockRepositoryImpl @ExperimentalPagingApi
+@Inject constructor(
     private val stockDao: StockDao,
-    private val stockService: StockService
+    private val stockService: StockService,
+    private val stockMediator: StockMediator
 ) : StockRepository {
-    override fun getStocksAndQuotesFlow(): Flow<List<DomainStockSymbol>> {
-        return stockDao.getStocksAndQuotes().map {
-            it.map { symbol ->
-                symbol.asDomainObject(
-                    logoUrl = "$BASE_LOGO_URL?symbol=${symbol.stockSymbol.displaySymbol}"
-                )
-            }
+    @ExperimentalPagingApi
+    override fun getStocksAndQuotesLiveData(): LiveData<PagingData<DomainStockSymbol>> {
+        val pagingSourceFactory = {
+            stockDao.getStocksAndQuotes()
         }
-    }
-
-    override suspend fun refreshStocks() {
-        withContext(Dispatchers.IO) {
-            if (stockDao.getStocksAndQuotesCount() == 0) {
-                val symbolsList: List<StockSymbol> = stockService.getStockSymbols()
-                stockDao.insertAll(
-                    symbolsList.map {
-                        it.asDatabaseObject()
-                    }
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                maxSize = 130
+            ),
+            pagingSourceFactory = pagingSourceFactory,
+            remoteMediator = stockMediator,
+        ).liveData.map {
+            it.map { symbolAndQuote ->
+                symbolAndQuote.asDomainObject(
+                    logoUrl = "$BASE_LOGO_URL?symbol=${symbolAndQuote.stockSymbol.displaySymbol}"
                 )
             }
         }
@@ -52,14 +53,18 @@ class StockRepositoryImpl @Inject constructor(
                     stockService.getStockQuote(symbol)
                         .asDatabaseObject(symbol)
                 )
-
+                Log.e(
+                    "RepositoryStock",
+                    "REQUESTED $symbol"
+                )
                 //Insert every 40 items into db
-                if (index % 20 == 0) {
-                    stockDao.insertAllQuotes(quotesTemp)
+                if (index > 0 && index % 20 == 0) {
                     Log.e(
                         "RepositoryStock",
                         "INSERTED ${quotesTemp.first().displaySymbol} ${quotesTemp.last().displaySymbol}"
                     )
+                    stockDao.insertAllQuotes(quotesTemp)
+
                     quotesTemp.clear()
                 }
             }
