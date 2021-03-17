@@ -54,6 +54,9 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$version_hilt"
     kapt "com.google.dagger:hilt-compiler:$version_hilt"
 
+    //Paging 3
+    implementation "androidx.paging:paging-runtime:$version_paging"
+
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle"
 
@@ -79,7 +82,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_coroutines"
 
-    //lib to generate missing logos
+    //lib to generate missing logo's
     implementation 'com.first.avatargenerator:AvatarImageGenerator:1.4'
 
 }
