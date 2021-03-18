@@ -1,5 +1,6 @@
 package ru.mrfiring.stocktracker.presentation.home
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -34,6 +35,7 @@ class HomeRecyclerViewAdapter(private val clickListener: ClickListener) :
     class StockViewHolder private constructor(
         private val binding: StockListItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("StringFormatInvalid")
         fun bind(item: DomainStockSymbol, clickListener: ClickListener) {
             binding.apply {
                 val context = root.context
@@ -45,19 +47,22 @@ class HomeRecyclerViewAdapter(private val clickListener: ClickListener) :
                 symbol.text = item.symbol
 
                 val curPrice = item.quote.current
-                currentPrice.text = curPrice.toString()
+                currentPrice.text = context.getString(
+                    R.string.format_current_price,
+                    curPrice
+                )
 
                 if (curPrice > 0) {
                     val dPrice = item.quote.getDeltaPrice()
 
                     if (dPrice > 0) {
                         deltaPrice.setTextColor(Color.GREEN)
-                    } else {
+                    } else if (dPrice < 0) {
                         deltaPrice.setTextColor(Color.RED)
                     }
 
                     deltaPrice.text = context.getString(
-                        R.string.delta_price_format,
+                        R.string.format_delta_price,
                         dPrice,
                         item.quote.getDeltaPricePercent()
                     )
