@@ -27,4 +27,12 @@ interface CompanyService {
         @Query("symbol") symbol: String,
         @Query("token") token: String = TOKEN
     ): CompanyProfile
+
+    @GET("company-news")
+    suspend fun getCompanyNewsList(
+        @Query("symbol") symbol: String,
+        @Query("from") fromDate: String,
+        @Query("to") toDate: String,
+        @Query("token") token: String = TOKEN
+    ): List<CompanyNews>
 }
