@@ -1,9 +1,40 @@
 package ru.mrfiring.stocktracker.presentation.details
 
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.scopes.ViewModelScoped
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import ru.mrfiring.stocktracker.domain.DomainCompany
+import java.io.IOException
+import javax.inject.Inject
 
-@ViewModelScoped
-class DetailsViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+enum class LoadingStatus {
+    LOADING, ERROR, DONE
+}
+
+class DetailsViewModel @Inject constructor(
+    application: Application
+) : AndroidViewModel(application) {
+
+    private val _status = MutableLiveData<LoadingStatus>()
+    val status: LiveData<LoadingStatus>
+        get() = _status
+
+    private val _company = MutableLiveData<DomainCompany>()
+    val company: LiveData<DomainCompany>
+        get() = _company
+
+
+    fun bindCompany() = viewModelScope.launch {
+        try {
+            _status.value = LoadingStatus.LOADING
+            //to task
+            _status.value = LoadingStatus.DONE
+        } catch (ex: IOException) {
+            _status.value = LoadingStatus.ERROR
+        }
+    }
+
 }
