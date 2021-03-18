@@ -8,7 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.mrfiring.stocktracker.data.database.DatabaseStockQuote
 import ru.mrfiring.stocktracker.data.database.StockDao
-import ru.mrfiring.stocktracker.data.database.asDomainObject
 import ru.mrfiring.stocktracker.data.network.BASE_LOGO_URL
 import ru.mrfiring.stocktracker.data.network.StockService
 import ru.mrfiring.stocktracker.data.paging.StockMediator

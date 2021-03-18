@@ -8,6 +8,7 @@ import androidx.paging.RemoteMediator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import ru.mrfiring.stocktracker.data.asDatabaseObject
 import ru.mrfiring.stocktracker.data.database.StockDao
 import ru.mrfiring.stocktracker.data.database.relations.StockSymbolAndQuote
 import ru.mrfiring.stocktracker.data.network.StockService

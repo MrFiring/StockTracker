@@ -2,9 +2,6 @@ package ru.mrfiring.stocktracker.data.network
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import ru.mrfiring.stocktracker.data.database.DatabaseCompany
-import ru.mrfiring.stocktracker.data.database.DatabaseStockQuote
-import ru.mrfiring.stocktracker.data.database.DatabaseStockSymbol
 
 /*[
    {
@@ -28,11 +25,7 @@ data class StockSymbol(
     val mic: String,
     val symbol: String,
     val type: String
-){
-    fun asDatabaseObject(): DatabaseStockSymbol {
-        return DatabaseStockSymbol(displaySymbol, description, currency, figi, mic, type)
-    }
-}
+)
 
 /*
   {
@@ -65,22 +58,7 @@ data class CompanyProfile(
     @Json(name = "weburl") val webUrl: String,
     @Json(name = "logo") val logoUrl: String,
     val finnhubIndustry: String
-){
-    fun asDatabaseObject(symbol: String): DatabaseCompany {
-        return DatabaseCompany(
-            symbol,
-            exchange,
-            ipo,
-            marketCapitalization,
-            name,
-            phone,
-            shareOutStanding,
-            webUrl,
-            logoUrl,
-            finnhubIndustry
-        )
-    }
-}
+)
 
 /*
 {
@@ -100,11 +78,7 @@ data class StockQuote(
         @Json(name = "o") val dayOpen: Double,
         @Json(name = "pc") val previousDayOpen: Double,
         @Json(name = "t") val time: Double
-){
-    fun asDatabaseObject(symbol: String): DatabaseStockQuote {
-        return DatabaseStockQuote(symbol, current, dayHigh, dayLow, dayOpen, previousDayOpen, time)
-    }
-}
+)
 
 
 
