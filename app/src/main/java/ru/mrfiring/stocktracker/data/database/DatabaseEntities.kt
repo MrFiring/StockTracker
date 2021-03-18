@@ -15,6 +15,19 @@ data class DatabaseStockSymbol(
 )
 
 @Entity
+data class DatabaseStockQuote(
+    @PrimaryKey(autoGenerate = false)
+    val displaySymbol: String,
+
+    val current: Double,
+    val dayHigh: Double,
+    val dayLow: Double,
+    val dayOpen: Double,
+    val previousDayOpen: Double,
+    val time: Double
+)
+
+@Entity
 data class DatabaseCompany(
     @PrimaryKey(autoGenerate = false)
     val displaySymbol: String,
@@ -31,14 +44,14 @@ data class DatabaseCompany(
 )
 
 @Entity
-data class DatabaseStockQuote(
+data class DatabaseCompanyNews(
     @PrimaryKey(autoGenerate = false)
-    val displaySymbol: String,
-
-    val current: Double,
-    val dayHigh: Double,
-    val dayLow: Double,
-    val dayOpen: Double,
-    val previousDayOpen: Double,
-    val time: Double
+    val symbol: String,
+    val category: String,
+    val datetime: Long,
+    val id: Long,
+    val imgUrl: String,
+    val sourceName: String,
+    val summary: String,
+    val articleUrl: String
 )
