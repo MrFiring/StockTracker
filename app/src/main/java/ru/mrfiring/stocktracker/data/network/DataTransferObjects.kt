@@ -60,14 +60,25 @@ data class CompanyProfile(
     val marketCapitalization: Double,
     val name: String,
     val phone: String,
-    val shareOutStanding: Double,
+    @Json(name = "shareOutstanding") val shareOutStanding: Double,
     val ticker: String,
     @Json(name = "weburl") val webUrl: String,
     @Json(name = "logo") val logoUrl: String,
-    val finhubIndustry: String
+    val finnhubIndustry: String
 ){
     fun asDatabaseObject(symbol: String): DatabaseCompany {
-        return DatabaseCompany(symbol, exchange, ipo, marketCapitalization, name, phone, shareOutStanding, webUrl, logoUrl, finhubIndustry)
+        return DatabaseCompany(
+            symbol,
+            exchange,
+            ipo,
+            marketCapitalization,
+            name,
+            phone,
+            shareOutStanding,
+            webUrl,
+            logoUrl,
+            finnhubIndustry
+        )
     }
 }
 
