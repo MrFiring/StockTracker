@@ -12,17 +12,19 @@ interface StockService{
     suspend fun getStockSymbols(
         @Query("exchange") exchange: String = "US",
         @Query("token") token: String = TOKEN
-    ) : List<StockSymbol>
+    ): List<StockSymbol>
 
+    @GET("quote")
+    suspend fun getStockQuote(
+        @Query("symbol") symbol: String,
+        @Query("token") token: String = TOKEN
+    ): StockQuote
+}
+
+interface CompanyService {
     @GET("stock/profile2")
     suspend fun getCompanyProfile(
         @Query("symbol") symbol: String,
         @Query("token") token: String = TOKEN
     ): CompanyProfile
-
-    @GET("quote")
-    suspend fun getStockQuote(
-            @Query("symbol") symbol: String,
-            @Query("token") token: String = TOKEN
-    ): StockQuote
 }

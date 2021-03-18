@@ -9,6 +9,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import ru.mrfiring.stocktracker.data.network.BASE_URL
+import ru.mrfiring.stocktracker.data.network.CompanyService
 import ru.mrfiring.stocktracker.data.network.StockService
 import javax.inject.Singleton
 
@@ -46,6 +47,12 @@ object NetworkModule {
     @Provides
     fun provideStockService(retrofit: Retrofit): StockService {
         return retrofit.create(StockService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideCompanyService(retrofit: Retrofit): CompanyService {
+        return retrofit.create(CompanyService::class.java)
     }
 
 }
