@@ -15,8 +15,6 @@ data class DomainCompany(
     val phone: String,
     val shareOutStanding: Double,
     val finhubIndustry: String,
-
-    val quote: DomainQuote
 )
 
 data class DomainQuote(

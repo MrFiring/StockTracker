@@ -59,10 +59,9 @@ fun StockSymbolAndQuote.asDomainObject(
 }
 
 fun DatabaseCompany.asDomainObject(
-    quote: DomainQuote
 ): DomainCompany = DomainCompany(
     displaySymbol, exchange, marketCapitalization,
-    name, phone, shareOutStanding, finhubIndustry, quote
+    name, phone, shareOutStanding, finhubIndustry
 )
 
 fun DatabaseStockQuote.asDomainModel(): DomainQuote =
