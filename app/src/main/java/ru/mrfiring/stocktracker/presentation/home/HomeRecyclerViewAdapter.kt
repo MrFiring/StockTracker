@@ -38,10 +38,9 @@ class HomeRecyclerViewAdapter(private val clickListener: ClickListener) :
             binding.apply {
                 val context = root.context
 
-                root.setOnClickListener {
+                listItemCard.setOnClickListener {
                     clickListener.onClick(item)
                 }
-
                 companyName.text = item.companyName
                 symbol.text = item.symbol
 

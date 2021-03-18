@@ -34,7 +34,7 @@ class HomeFragment : Fragment() {
         )
 
         val recyclerAdapter = HomeRecyclerViewAdapter(HomeRecyclerViewAdapter.ClickListener {
-            Toast.makeText(context, it.companyName, Toast.LENGTH_SHORT).show()
+            homeViewModel.navigateToDetail(it.symbol)
         })
 
         recyclerAdapter.addLoadStateListener {
@@ -67,6 +67,11 @@ class HomeFragment : Fragment() {
                     .navigate(HomeFragmentDirections.actionHomeFragmentToSearchFragment())
             }
         })
+
+        homeViewModel.navigateToDetailFragment.observe(viewLifecycleOwner) {
+            this.findNavController()
+                .navigate(HomeFragmentDirections.actionHomeFragmentToDetailsFragment(it))
+        }
 
         return binding.root
     }

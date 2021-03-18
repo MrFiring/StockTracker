@@ -25,6 +25,10 @@ class HomeViewModel @Inject constructor(
     val navigateToSearchFragment: LiveData<Boolean>
         get() = _navigateToSearchFragment
 
+    private val _navigateToDetailFragment = SingleLiveEvent<String>()
+    val navigateToDetailFragment: LiveData<String>
+        get() = _navigateToDetailFragment
+
     private val _isNetworkError = SingleLiveEvent<Boolean>()
     val isNetworkError
         get() = _isNetworkError
@@ -40,6 +44,10 @@ class HomeViewModel @Inject constructor(
 
     fun navigateToSearch() {
         _navigateToSearchFragment.value = true
+    }
+
+    fun navigateToDetail(symbol: String) {
+        _navigateToDetailFragment.value = symbol
     }
 
     private fun refreshStocks() = viewModelScope.launch {
