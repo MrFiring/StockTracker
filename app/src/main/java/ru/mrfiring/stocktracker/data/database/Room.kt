@@ -26,7 +26,7 @@ interface StockDao{
 @Dao
 interface CompanyDao{
     @Query("select * from databasecompany where displaySymbol = :symbol")
-    suspend fun getCompany(symbol: String): DatabaseCompany?
+    suspend fun getCompanyBySymbol(symbol: String): DatabaseCompany?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCompany(company: DatabaseCompany)
