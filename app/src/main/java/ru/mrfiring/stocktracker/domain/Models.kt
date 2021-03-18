@@ -7,7 +7,7 @@ data class DomainStockSymbol(
     val quote: DomainQuote
 )
 
-data class DomainStockDetail(
+data class DomainCompany(
     val symbol: String,
     val exchange: String,
     val marketCapitalization: Double,

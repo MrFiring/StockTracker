@@ -3,8 +3,8 @@ package ru.mrfiring.stocktracker.data.database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ru.mrfiring.stocktracker.data.database.relations.StockSymbolAndQuote
+import ru.mrfiring.stocktracker.domain.DomainCompany
 import ru.mrfiring.stocktracker.domain.DomainQuote
-import ru.mrfiring.stocktracker.domain.DomainStockDetail
 import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 
 @Entity
@@ -60,7 +60,7 @@ fun StockSymbolAndQuote.asDomainObject(
 
 fun DatabaseCompany.asDomainObject(
     quote: DomainQuote
-): DomainStockDetail = DomainStockDetail(
+): DomainCompany = DomainCompany(
     displaySymbol, exchange, marketCapitalization,
     name, phone, shareOutStanding, finhubIndustry, quote
 )
