@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import ru.mrfiring.stocktracker.databinding.HomeFragmentBinding
@@ -20,11 +21,13 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var homeViewModel: HomeViewModel
 
+    lateinit var binding: HomeFragmentBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: HomeFragmentBinding = HomeFragmentBinding.inflate(
+        binding = HomeFragmentBinding.inflate(
             inflater,
             container,
             false
@@ -33,6 +36,15 @@ class HomeFragment : Fragment() {
         val recyclerAdapter = HomeRecyclerViewAdapter(HomeRecyclerViewAdapter.ClickListener {
             Toast.makeText(context, it.companyName, Toast.LENGTH_SHORT).show()
         })
+
+        recyclerAdapter.addLoadStateListener {
+            if (it.source.refresh is LoadState.Loading) {
+                setIsLoading()
+            } else {
+                setIsLoaded()
+            }
+
+        }
 
         binding.stockList.adapter = recyclerAdapter
 
@@ -59,5 +71,16 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    fun setIsLoading() {
+        binding.searchView.visibility = View.GONE
+        binding.stockList.visibility = View.GONE
+        binding.loadingBar.visibility = View.VISIBLE
+    }
+
+    fun setIsLoaded() {
+        binding.searchView.visibility = View.VISIBLE
+        binding.stockList.visibility = View.VISIBLE
+        binding.loadingBar.visibility = View.GONE
+    }
 
 }

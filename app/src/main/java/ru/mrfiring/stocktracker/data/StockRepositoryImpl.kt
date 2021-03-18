@@ -53,11 +53,8 @@ class StockRepositoryImpl @ExperimentalPagingApi
                     stockService.getStockQuote(symbol)
                         .asDatabaseObject(symbol)
                 )
-                Log.e(
-                    "RepositoryStock",
-                    "REQUESTED $symbol"
-                )
-                //Insert every 40 items into db
+
+                //Insert every 20 items into db
                 if (index > 0 && index % 20 == 0) {
                     Log.e(
                         "RepositoryStock",

@@ -1,5 +1,6 @@
 package ru.mrfiring.stocktracker.data.paging
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -22,6 +23,7 @@ class StockMediator @Inject constructor(
         loadType: LoadType,
         state: PagingState<Int, StockSymbolAndQuote>
     ): MediatorResult {
+        Log.e("Mediator", loadType.toString())
         when (loadType) {
             LoadType.REFRESH -> {
                 val symbolsCount = stockDao.getStocksAndQuotesCount()
