@@ -9,4 +9,9 @@ interface StockRepository {
 
     suspend fun refreshQuotes()
 
+    suspend fun getStockSearchHistory(): List<String>
+
+    suspend fun searchStockSymbol(query: String): List<DomainStockSearchItem>
+
+    suspend fun deleteAllSearchHistory()
 }

@@ -6,11 +6,14 @@ import androidx.lifecycle.map
 import androidx.paging.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.mrfiring.stocktracker.data.database.DatabaseSearchHistory
 import ru.mrfiring.stocktracker.data.database.DatabaseStockQuote
 import ru.mrfiring.stocktracker.data.database.StockDao
 import ru.mrfiring.stocktracker.data.network.BASE_LOGO_URL
+import ru.mrfiring.stocktracker.data.network.StockSearchResult
 import ru.mrfiring.stocktracker.data.network.StockService
 import ru.mrfiring.stocktracker.data.paging.StockMediator
+import ru.mrfiring.stocktracker.domain.DomainStockSearchItem
 import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 import ru.mrfiring.stocktracker.domain.StockRepository
 import javax.inject.Inject
@@ -66,4 +69,27 @@ class StockRepositoryImpl @ExperimentalPagingApi
             }
         }
     }
+
+    override suspend fun getStockSearchHistory(): List<String> = stockDao.getStockSearchHistory()
+
+
+    override suspend fun searchStockSymbol(query: String): List<DomainStockSearchItem> {
+        var response = emptyList<DomainStockSearchItem>()
+        withContext(Dispatchers.IO) {
+            val searchResult: StockSearchResult = stockService.searchStockSymbol(query)
+            stockDao.insertStockSearchHistory(
+                DatabaseSearchHistory(query = query)
+            )
+
+            if (searchResult.count > 0) {
+                response = searchResult.result.map {
+                    it.asDomainObject()
+                }
+            }
+        }
+
+        return response
+    }
+
+    override suspend fun deleteAllSearchHistory() = stockDao.deleteAllStockSearchHistory()
 }
