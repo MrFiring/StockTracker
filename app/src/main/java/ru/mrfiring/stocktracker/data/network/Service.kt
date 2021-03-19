@@ -19,6 +19,12 @@ interface StockService{
         @Query("symbol") symbol: String,
         @Query("token") token: String = TOKEN
     ): StockQuote
+
+    @GET("search")
+    suspend fun searchStockSymbol(
+        @Query("q") query: String,
+        @Query("token") token: String = TOKEN
+    ): StockSearchResult
 }
 
 interface CompanyService {

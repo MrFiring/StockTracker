@@ -21,6 +21,15 @@ interface StockDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllQuotes(quotes: List<DatabaseStockQuote>)
+
+    @Query("select `query` from databasesearchhistory")
+    suspend fun getStockSearchHistory(): List<String>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertStockSearchHistory(item: DatabaseSearchHistory)
+
+    @Query("delete from databasesearchhistory")
+    suspend fun deleteAllStockSearchHistory()
 }
 
 @Dao
@@ -47,9 +56,10 @@ interface CompanyDao {
         DatabaseStockSymbol::class,
         DatabaseCompany::class,
         DatabaseStockQuote::class,
-        DatabaseCompanyNews::class
+        DatabaseCompanyNews::class,
+        DatabaseSearchHistory::class
     ],
-    version = 3
+    version = 4
 )
 abstract class StockDatabase : RoomDatabase() {
     abstract val stockDao: StockDao

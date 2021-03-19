@@ -49,6 +49,35 @@ data class StockQuote(
 )
 
 /*
+{
+    "count": 27,
+    "result": [...]
+}
+ */
+
+@JsonClass(generateAdapter = true)
+data class StockSearchResult(
+    val count: Int,
+    val result: List<StockSearchItem>
+)
+
+/*
+    {
+      "description": "FLC STONE MINING AND INVESTM",
+      "displaySymbol": "AMD.VN",
+      "symbol": "AMD.VN",
+      "type": "Common Stock"
+    },
+ */
+
+@JsonClass(generateAdapter = true)
+data class StockSearchItem(
+    val description: String,
+    val displaySymbol: String,
+    val type: String
+)
+
+/*
   {
   "country": "US",
   "currency": "USD",
@@ -110,7 +139,5 @@ data class CompanyNews(
     @Json(name = "url")
     val articleUrl: String
 )
-
-
 
 

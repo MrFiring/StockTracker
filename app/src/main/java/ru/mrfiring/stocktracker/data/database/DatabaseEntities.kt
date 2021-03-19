@@ -28,6 +28,13 @@ data class DatabaseStockQuote(
 )
 
 @Entity
+data class DatabaseSearchHistory(
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
+    val query: String
+)
+
+@Entity
 data class DatabaseCompany(
     @PrimaryKey(autoGenerate = false)
     val displaySymbol: String,

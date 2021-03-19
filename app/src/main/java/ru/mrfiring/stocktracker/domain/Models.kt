@@ -18,6 +18,12 @@ data class DomainQuote(
     fun getDeltaPricePercent(): Double = (dayOpen - dayHigh) / dayOpen
 }
 
+data class DomainStockSearchItem(
+    val description: String,
+    val displaySymbol: String,
+    val type: String
+)
+
 data class DomainCompany(
     val symbol: String,
     val exchange: String,
