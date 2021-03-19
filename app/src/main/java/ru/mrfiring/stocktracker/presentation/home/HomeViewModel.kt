@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import kotlinx.coroutines.launch
 import ru.mrfiring.stocktracker.SingleLiveEvent
 import ru.mrfiring.stocktracker.domain.DomainStockSymbol
@@ -38,7 +39,8 @@ class HomeViewModel @Inject constructor(
         get() = _stocks
 
     init {
-        _stocks = getStocksAndQuotesLiveDataCase() as MutableLiveData<PagingData<DomainStockSymbol>>
+        _stocks = getStocksAndQuotesLiveDataCase()
+            .cachedIn(viewModelScope) as MutableLiveData<PagingData<DomainStockSymbol>>
         refreshStocks()
     }
 
