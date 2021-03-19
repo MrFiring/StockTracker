@@ -2,8 +2,8 @@
     <string name="app_name">StockTracker</string>
     <string name="format_delta_price">%1$.2f\$ | %2$.2f\%%</string>
     <string name="format_current_price">%1$.2f\$</string>
-
-    <!--    Detail fragment-->
+    <string name="find_company_or_ticker">Find company or ticker</string>
+    <!--    Detail fragment     -->
     <string name="base_information">Base information</string>
     <string name="financial_performance">Financial performance</string>
     <string name="format_phone">Phone: %1$s</string>
@@ -11,6 +11,6 @@
     <string name="format_market_cap">Market capitalization: %1$.2f\$</string>
     <string name="format_number_outstanding">Number of outstanding shares: %1$.2f</string>
     <string name="format_industry">Industry: %1$s</string>
-    <!--    end Detail fragment-->
+    <!--    end Detail fragment     -->
 
 </resources>
