@@ -61,6 +61,10 @@ class HomeFragment : Fragment() {
             }
         })
 
+        binding.searchView.setOnClickListener {
+            homeViewModel.navigateToSearch()
+        }
+
         homeViewModel.navigateToSearchFragment.observe(viewLifecycleOwner, Observer {
             if (it) {
                 this.findNavController()
