@@ -13,4 +13,9 @@
     <string name="format_industry">Industry: %1$s</string>
     <!--    end Detail fragment     -->
 
+    <!--    Search fragment     -->
+    <string name="you_ve_searched_for_this">You\'ve searched for this</string>
+    <string name="stocks">Stocks</string>
+    <!--    end Search fragment     -->
+
 </resources>

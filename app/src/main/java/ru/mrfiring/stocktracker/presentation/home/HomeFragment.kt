@@ -33,9 +33,9 @@ class HomeFragment : Fragment() {
             false
         )
 
-        val recyclerAdapter = HomeRecyclerViewAdapter(HomeRecyclerViewAdapter.ClickListener {
+        val recyclerAdapter = HomeRecyclerViewAdapter {
             homeViewModel.navigateToDetail(it.symbol)
-        })
+        }
 
         recyclerAdapter.addLoadStateListener {
             if (it.source.refresh is LoadState.Loading) {

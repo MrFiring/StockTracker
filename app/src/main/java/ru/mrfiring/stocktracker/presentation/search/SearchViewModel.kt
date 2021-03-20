@@ -6,7 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import ru.mrfiring.stocktracker.SingleLiveEvent
 import ru.mrfiring.stocktracker.domain.DomainStockSearchItem
 import ru.mrfiring.stocktracker.domain.GetStockSearchHistoryUseCase
 import ru.mrfiring.stocktracker.domain.SearchStockSymbolUseCase
@@ -19,6 +22,7 @@ data class CombinedLoadingState(
     val searchStatus: LoadingStatus?
 )
 
+@FlowPreview
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     application: Application,
@@ -26,9 +30,11 @@ class SearchViewModel @Inject constructor(
     private val getStockSearchHistoryUseCase: GetStockSearchHistoryUseCase
 ) : AndroidViewModel(application) {
 
-    private val _status = MutableLiveData<CombinedLoadingState>()
+    private val _status = SingleLiveEvent<CombinedLoadingState>()
     val status: LiveData<CombinedLoadingState>
         get() = _status
+
+    private val _queryFlow = MutableSharedFlow<String>()
 
     private val _history = MutableLiveData<List<String>>()
     val history: LiveData<List<String>>
@@ -40,6 +46,11 @@ class SearchViewModel @Inject constructor(
 
     init {
         bindHistory()
+        sendSearchRequest()
+    }
+
+    fun emitNewQuery(query: String) = viewModelScope.launch {
+        _queryFlow.emit(query)
     }
 
     private fun bindHistory() = viewModelScope.launch {
@@ -61,22 +72,32 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun sendSearchRequest(query: String) = viewModelScope.launch {
-        try {
-            _status.value = CombinedLoadingState(
-                searchStatus = LoadingStatus.LOADING,
-                historyStatus = _status.value?.historyStatus
-            )
-            _searchResults.value = searchStockSymbolUseCase(query)
-            _status.value = CombinedLoadingState(
-                searchStatus = LoadingStatus.DONE,
-                historyStatus = _status.value?.historyStatus
-            )
-        } catch (ex: IOException) {
-            _status.value = CombinedLoadingState(
-                searchStatus = LoadingStatus.ERROR,
-                historyStatus = _status.value?.historyStatus
-            )
-        }
+    @FlowPreview
+    fun sendSearchRequest() = viewModelScope.launch {
+        _queryFlow
+            .debounce(500)
+            .filter {
+                it.isNotEmpty()
+            }
+            .onEach {
+                _status.value = CombinedLoadingState(
+                    searchStatus = LoadingStatus.LOADING,
+                    historyStatus = _status.value?.historyStatus
+                )
+            }
+            .catch {
+                _status.value = CombinedLoadingState(
+                    searchStatus = LoadingStatus.ERROR,
+                    historyStatus = _status.value?.historyStatus
+                )
+            }
+            .collectLatest {
+                _searchResults.value = searchStockSymbolUseCase(it)
+                _status.value = CombinedLoadingState(
+                    searchStatus = LoadingStatus.DONE,
+                    historyStatus = _status.value?.historyStatus
+                )
+
+            }
     }
 }
