@@ -6,7 +6,7 @@ import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 import ru.mrfiring.stocktracker.presentation.reusable.diffutil.StockSymbolDiffUtilCallback
 import ru.mrfiring.stocktracker.presentation.reusable.viewholder.StockViewHolder
 
-class HomeRecyclerViewAdapter(private val clickListener: ClickListener) :
+class HomeRecyclerViewAdapter(private val onClick: (DomainStockSymbol) -> Unit) :
     PagingDataAdapter<DomainStockSymbol, StockViewHolder>(
         StockSymbolDiffUtilCallback()
     ) {
@@ -18,11 +18,8 @@ class HomeRecyclerViewAdapter(private val clickListener: ClickListener) :
     override fun onBindViewHolder(holder: StockViewHolder, position: Int) {
         val item = getItem(position)
         item?.let {
-            holder.bind(it, clickListener)
+            holder.bind(it, onClick)
         }
     }
 
-    class ClickListener(val block: (DomainStockSymbol) -> Unit) {
-        fun onClick(stock: DomainStockSymbol) = block(stock)
-    }
 }
