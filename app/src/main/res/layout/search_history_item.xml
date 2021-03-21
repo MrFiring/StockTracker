@@ -4,4 +4,6 @@
     android:id="@+id/chipSearchName"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_search_history_item"
+    android:textAlignment="center"
     tools:text="Apple" />
