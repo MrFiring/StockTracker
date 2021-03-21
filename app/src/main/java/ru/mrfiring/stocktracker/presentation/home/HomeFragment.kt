@@ -32,11 +32,20 @@ class HomeFragment : Fragment() {
             false
         )
 
-        val recyclerAdapter = HomeRecyclerViewAdapter {
-            homeViewModel.navigateToDetail(it.symbol)
-        }
+        val recyclerAdapter = HomeRecyclerViewAdapter(
+            onClick = {
+                homeViewModel.navigateToDetail(it.symbol)
+            },
+            onLongClick = {
+                homeViewModel.markAsFavorite(it)
+            }
+        )
+
 
         recyclerAdapter.addLoadStateListener {
+            if (it.mediator?.refresh is LoadState.Loading) {
+                setIsLoading()
+            }
             if (it.source.refresh is LoadState.Loading) {
                 setIsLoading()
             } else {

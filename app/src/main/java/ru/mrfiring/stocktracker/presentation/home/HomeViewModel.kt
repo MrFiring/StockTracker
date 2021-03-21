@@ -14,6 +14,7 @@ import ru.mrfiring.stocktracker.SingleLiveEvent
 import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 import ru.mrfiring.stocktracker.domain.GetStocksAndQuotesLiveDataCase
 import ru.mrfiring.stocktracker.domain.RefreshQuotesUseCase
+import ru.mrfiring.stocktracker.domain.UpdateStockSymbolUseCase
 import java.io.IOException
 import javax.inject.Inject
 
@@ -21,7 +22,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     application: Application,
     private val getStocksAndQuotesLiveDataCase: GetStocksAndQuotesLiveDataCase,
-    private val refreshQuotesUseCase: RefreshQuotesUseCase
+    private val refreshQuotesUseCase: RefreshQuotesUseCase,
+    private val updateStockSymbolUseCase: UpdateStockSymbolUseCase
 ) : AndroidViewModel(application) {
     private val _navigateToSearchFragment = SingleLiveEvent<Boolean>()
     val navigateToSearchFragment: LiveData<Boolean>
@@ -51,6 +53,17 @@ class HomeViewModel @Inject constructor(
 
     fun navigateToDetail(symbol: String) {
         _navigateToDetailFragment.value = symbol
+    }
+
+    fun markAsFavorite(symbol: DomainStockSymbol) = viewModelScope.launch {
+        val newSymbol = DomainStockSymbol(
+            symbol.symbol,
+            symbol.companyName,
+            symbol.logoUrl,
+            symbol.quote,
+            !symbol.isFavorite
+        )
+        updateStockSymbolUseCase(newSymbol)
     }
 
     private fun refreshStocks() = viewModelScope.launch {

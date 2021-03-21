@@ -59,7 +59,8 @@ class SearchFragment : Fragment() {
                             it.displaySymbol,
                             it.description,
                             "",
-                            DomainQuote(0.0, 0.0, 0.0, 0.0, 0.0)
+                            DomainQuote(0.0, 0.0, 0.0, 0.0, 0.0),
+                            false
                         )
                     }
                 )
