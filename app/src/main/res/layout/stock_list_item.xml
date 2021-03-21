@@ -27,25 +27,41 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/symbolLogo"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+            <FrameLayout
+                android:id="@+id/frameLayout"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@tools:sample/avatars" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/symbolLogo"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <ImageView
+                    android:id="@+id/favoriteMark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:visibility="gone"
+                    app:srcCompat="@android:drawable/btn_star_big_on"
+                    tools:srcCompat="@android:drawable/btn_star_big_on" />
+
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/symbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="32dp"
-                app:layout_constraintStart_toEndOf="@+id/symbolLogo"
+                app:layout_constraintStart_toEndOf="@+id/frameLayout"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="APPL" />
 
@@ -53,10 +69,9 @@
                 android:id="@+id/companyName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="12dp"
                 android:maxLength="20"
-                app:layout_constraintStart_toEndOf="@+id/symbolLogo"
+                app:layout_constraintStart_toStartOf="@+id/symbol"
                 app:layout_constraintTop_toBottomOf="@+id/symbol"
                 tools:text="Apple Inc." />
 

@@ -3,6 +3,7 @@ package ru.mrfiring.stocktracker.presentation.reusable.viewholder
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
@@ -19,13 +20,23 @@ class StockViewHolder private constructor(
     private val binding: StockListItemBinding
 ) : RecyclerView.ViewHolder(binding.root) {
     @SuppressLint("StringFormatInvalid")
-    fun bind(item: DomainStockSymbol, onClick: (DomainStockSymbol) -> Unit) {
+    fun bind(
+        item: DomainStockSymbol,
+        onLongClick: (DomainStockSymbol) -> Unit = {},
+        onClick: (DomainStockSymbol) -> Unit
+    ) {
         binding.apply {
             val context = root.context
 
             listItemCard.setOnClickListener {
                 onClick(item)
             }
+
+            listItemCard.setOnLongClickListener {
+                onLongClick(item)
+                true
+            }
+
             companyName.text = item.companyName
             symbol.text = item.symbol
 
@@ -49,6 +60,12 @@ class StockViewHolder private constructor(
                     dPrice,
                     item.quote.getDeltaPricePercent()
                 )
+            }
+
+            if (item.isFavorite) {
+                favoriteMark.visibility = View.VISIBLE
+            } else {
+                favoriteMark.visibility = View.GONE
             }
 
             val imgUri = item.logoUrl.toUri().buildUpon().scheme("https").build()
