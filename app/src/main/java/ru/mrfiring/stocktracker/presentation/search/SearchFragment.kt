@@ -89,6 +89,7 @@ class SearchFragment : Fragment() {
                         setResultsIsLoaded()
                     }
                     else -> {
+                        showNetworkError()
                     }
                 }
 
@@ -113,8 +114,16 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
+    private fun showNetworkError() {
+        binding.searchNetworkError.networkErrorContainer.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
+        binding.searchHistoryContainer.visibility = View.GONE
+        binding.searchResultsContainer.visibility = View.GONE
+    }
+
     private fun setHistoryIsLoading() {
         binding.progressBar.visibility = View.VISIBLE
+        binding.searchNetworkError.networkErrorContainer.visibility = View.GONE
         binding.searchHistoryContainer.visibility = View.GONE
         binding.searchResultsContainer.visibility = View.GONE
     }

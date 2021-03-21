@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -23,6 +24,7 @@ data class CombinedLoadingState(
 )
 
 @FlowPreview
+@ExperimentalCoroutinesApi
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     application: Application,
@@ -81,12 +83,14 @@ class SearchViewModel @Inject constructor(
         bindHistory()
     }
 
-    @FlowPreview
     private fun sendSearchRequest() = viewModelScope.launch {
         _queryFlow
             .debounce(500)
             .filter {
                 it.isNotEmpty()
+            }
+            .flatMapLatest {
+                flowOf(searchStockSymbolUseCase(it))
             }
             .onEach {
                 _status.value = CombinedLoadingState(
@@ -101,12 +105,11 @@ class SearchViewModel @Inject constructor(
                 )
             }
             .collectLatest {
-                _searchResults.value = searchStockSymbolUseCase(it)
+                _searchResults.value = it
                 _status.value = CombinedLoadingState(
                     searchStatus = LoadingStatus.DONE,
                     historyStatus = _status.value?.historyStatus
                 )
-
             }
     }
 }
