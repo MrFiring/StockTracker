@@ -5,19 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import ru.mrfiring.stocktracker.R
 import ru.mrfiring.stocktracker.databinding.DetailsFragmentBinding
 import ru.mrfiring.stocktracker.domain.DomainCompany
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
 
-    @Inject
-    lateinit var detailsViewModelFactory: DetailsViewModel.AssistedFactory
+    private val viewModel: DetailsViewModel by viewModels()
 
     private lateinit var binding: DetailsFragmentBinding
 
@@ -27,14 +24,6 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DetailsFragmentBinding.inflate(inflater, container, false)
-        val argSymbol = DetailsFragmentArgs.fromBundle(requireArguments()).symbol
-        val viewModel: DetailsViewModel = ViewModelProvider(
-            this,
-            DetailsViewModel.provideFactory(
-                detailsViewModelFactory,
-                argSymbol
-            )
-        ).get()
 
         viewModel.company.observe(viewLifecycleOwner) {
             setupInformationCard(it)

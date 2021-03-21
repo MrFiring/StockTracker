@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.mrfiring.stocktracker.SingleLiveEvent
 import ru.mrfiring.stocktracker.domain.DomainStockSymbol
@@ -16,7 +17,7 @@ import ru.mrfiring.stocktracker.domain.RefreshQuotesUseCase
 import java.io.IOException
 import javax.inject.Inject
 
-
+@HiltViewModel
 class HomeViewModel @Inject constructor(
     application: Application,
     private val getStocksAndQuotesLiveDataCase: GetStocksAndQuotesLiveDataCase,

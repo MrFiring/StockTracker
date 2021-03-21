@@ -2,25 +2,27 @@ package ru.mrfiring.stocktracker.presentation.details
 
 import android.app.Application
 import androidx.lifecycle.*
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.mrfiring.stocktracker.domain.DomainCompany
 import ru.mrfiring.stocktracker.domain.FetchCompanyUseCase
 import ru.mrfiring.stocktracker.domain.GetCompanyBySymbolUseCase
 import java.io.IOException
+import javax.inject.Inject
 
 enum class LoadingStatus {
     LOADING, ERROR, DONE
 }
 
-
-class DetailsViewModel @AssistedInject constructor(
+@HiltViewModel
+class DetailsViewModel @Inject constructor(
     application: Application,
-    @Assisted private var symbol: String,
+    private val savedStateHandle: SavedStateHandle,
     private val getCompanyBySymbolUseCase: GetCompanyBySymbolUseCase,
     private val fetchCompanyUseCase: FetchCompanyUseCase
 ) : AndroidViewModel(application) {
+
+    private val symbol = savedStateHandle.get<String>("symbol") ?: ""
 
     private val _status = MutableLiveData<LoadingStatus>()
     val status: LiveData<LoadingStatus>
@@ -46,25 +48,6 @@ class DetailsViewModel @AssistedInject constructor(
             }
         } catch (ex: IOException) {
             _status.value = LoadingStatus.ERROR
-        }
-    }
-
-
-    @dagger.assisted.AssistedFactory
-    interface AssistedFactory {
-        fun create(symbol: String): DetailsViewModel
-    }
-
-    companion object {
-        fun provideFactory(
-            assistedFactory: AssistedFactory,
-            symbol: String
-        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return assistedFactory.create(symbol) as T
-            }
-
         }
     }
 
