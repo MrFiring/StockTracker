@@ -72,8 +72,17 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    fun rebindHistory() {
+        //reset loading states
+        _status.value = CombinedLoadingState(
+            historyStatus = null,
+            searchStatus = null
+        )
+        bindHistory()
+    }
+
     @FlowPreview
-    fun sendSearchRequest() = viewModelScope.launch {
+    private fun sendSearchRequest() = viewModelScope.launch {
         _queryFlow
             .debounce(500)
             .filter {

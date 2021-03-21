@@ -32,8 +32,9 @@ class SearchFragment : Fragment() {
     ): View? {
         binding = SearchFragmentBinding.inflate(inflater, container, false)
 
+        //Setup adapters
         val searchHistoryViewAdapter = SearchHistoryViewAdapter {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            binding.searchQuery.setText(it)
         }
 
         val searchResultsRecyclerViewAdapter = SearchResultsRecyclerViewAdapter {
@@ -42,7 +43,9 @@ class SearchFragment : Fragment() {
 
         binding.searchHistoryList.adapter = searchHistoryViewAdapter
         binding.searchResultsList.adapter = searchResultsRecyclerViewAdapter
+        //end setup adapters
 
+        //Bind data into lists.
         viewModel.history.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
                 searchHistoryViewAdapter.submitList(it)
@@ -63,6 +66,7 @@ class SearchFragment : Fragment() {
             }
         }
 
+        //Show loading
         viewModel.status.observe(viewLifecycleOwner) {
             when (it.historyStatus) {
                 LoadingStatus.LOADING -> {
@@ -90,6 +94,7 @@ class SearchFragment : Fragment() {
 
             }
         }
+        //Listening to text changing of editText
         binding.searchQuery.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -99,6 +104,11 @@ class SearchFragment : Fragment() {
                 viewModel.emitNewQuery(text)
             }
         })
+
+        //Show history by pressing "clear_text" button of editText
+        binding.textInputLayout.setEndIconOnClickListener {
+            viewModel.rebindHistory()
+        }
 
         return binding.root
     }
