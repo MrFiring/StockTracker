@@ -4,7 +4,8 @@ data class DomainStockSymbol(
     val symbol: String,
     val companyName: String,
     val logoUrl: String,
-    val quote: DomainQuote
+    val quote: DomainQuote,
+    val isFavorite: Boolean
 )
 
 data class DomainQuote(

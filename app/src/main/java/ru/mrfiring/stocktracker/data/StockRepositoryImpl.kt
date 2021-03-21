@@ -46,6 +46,12 @@ class StockRepositoryImpl @ExperimentalPagingApi
 
     }
 
+    override suspend fun updateStockSymbol(item: DomainStockSymbol) {
+        withContext(Dispatchers.IO) {
+            stockDao.updateStockSymbol(item.symbol, item.isFavorite)
+        }
+    }
+
     override suspend fun refreshQuotes() {
         withContext(Dispatchers.IO) {
             val symbols = stockDao.getTickerList()

@@ -7,6 +7,8 @@ interface StockRepository {
 
     fun getStocksAndQuotesLiveData(): LiveData<PagingData<DomainStockSymbol>>
 
+    suspend fun updateStockSymbol(item: DomainStockSymbol)
+
     suspend fun refreshQuotes()
 
     suspend fun getStockSearchHistory(): List<String>

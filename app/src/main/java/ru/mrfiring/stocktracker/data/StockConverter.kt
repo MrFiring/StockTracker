@@ -11,7 +11,7 @@ import ru.mrfiring.stocktracker.domain.DomainStockSearchItem
 import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 
 fun StockSymbol.asDatabaseObject(): DatabaseStockSymbol {
-    return DatabaseStockSymbol(displaySymbol, description, currency, figi, mic, type)
+    return DatabaseStockSymbol(displaySymbol, description, currency, figi, mic, type, false)
 }
 
 fun StockSymbolAndQuote.asDomainObject(
@@ -21,7 +21,8 @@ fun StockSymbolAndQuote.asDomainObject(
         stockSymbol.displaySymbol,
         stockSymbol.description,
         logoUrl,
-        stockQuote?.asDomainModel() ?: DomainQuote(0.0, 0.0, 0.0, 0.0, 0.0)
+        stockQuote?.asDomainModel() ?: DomainQuote(0.0, 0.0, 0.0, 0.0, 0.0),
+        stockSymbol.isFavorite
     )
 }
 

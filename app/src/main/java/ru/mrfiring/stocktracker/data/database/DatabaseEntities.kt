@@ -11,7 +11,8 @@ data class DatabaseStockSymbol(
     val currency: String,
     val figi: String,
     val mic: String,
-    val type: String
+    val type: String,
+    val isFavorite: Boolean
 )
 
 @Entity

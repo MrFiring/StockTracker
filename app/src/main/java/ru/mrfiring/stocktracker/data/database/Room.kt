@@ -22,6 +22,9 @@ interface StockDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllQuotes(quotes: List<DatabaseStockQuote>)
 
+    @Query("update databasestocksymbol set isFavorite = :favorite where displaySymbol = :symbol")
+    fun updateStockSymbol(symbol: String, favorite: Boolean)
+
     @Query("select `query` from databasesearchhistory")
     suspend fun getStockSearchHistory(): List<String>
 
@@ -59,7 +62,7 @@ interface CompanyDao {
         DatabaseCompanyNews::class,
         DatabaseSearchHistory::class
     ],
-    version = 4
+    version = 5
 )
 abstract class StockDatabase : RoomDatabase() {
     abstract val stockDao: StockDao
