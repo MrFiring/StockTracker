@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.mrfiring.stocktracker.SingleLiveEvent
 import ru.mrfiring.stocktracker.domain.DomainStockSearchItem
+import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 import ru.mrfiring.stocktracker.domain.GetStockSearchHistoryUseCase
 import ru.mrfiring.stocktracker.domain.SearchStockSymbolUseCase
 import ru.mrfiring.stocktracker.presentation.details.LoadingStatus
@@ -35,6 +36,10 @@ class SearchViewModel @Inject constructor(
     private val _status = SingleLiveEvent<CombinedLoadingState>()
     val status: LiveData<CombinedLoadingState>
         get() = _status
+
+    private val _navigateToDetail = SingleLiveEvent<DomainStockSymbol>()
+    val navigateToDetail: LiveData<DomainStockSymbol>
+        get() = _navigateToDetail
 
     private val _queryFlow = MutableSharedFlow<String>()
 
@@ -111,5 +116,9 @@ class SearchViewModel @Inject constructor(
                     historyStatus = _status.value?.historyStatus
                 )
             }
+    }
+
+    fun onNavigateToDetail(item: DomainStockSymbol) {
+        _navigateToDetail.value = item
     }
 }

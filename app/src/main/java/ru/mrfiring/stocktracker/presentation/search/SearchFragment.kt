@@ -6,10 +6,10 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.launch
@@ -38,7 +38,7 @@ class SearchFragment : Fragment() {
         }
 
         val searchResultsRecyclerViewAdapter = SearchResultsRecyclerViewAdapter {
-            Toast.makeText(context, it.symbol, Toast.LENGTH_SHORT).show()
+            viewModel.onNavigateToDetail(it)
         }
 
         binding.searchHistoryList.adapter = searchHistoryViewAdapter
@@ -109,6 +109,13 @@ class SearchFragment : Fragment() {
         //Show history by pressing "clear_text" button of editText
         binding.textInputLayout.setEndIconOnClickListener {
             viewModel.rebindHistory()
+        }
+
+        //Navigation
+        viewModel.navigateToDetail.observe(viewLifecycleOwner) {
+            this.findNavController().navigate(
+                SearchFragmentDirections.actionSearchFragmentToDetailsFragment(it.symbol)
+            )
         }
 
         return binding.root
