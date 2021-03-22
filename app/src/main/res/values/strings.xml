@@ -3,6 +3,9 @@
     <string name="format_delta_price">%1$.2f\$ | %2$.2f\%%</string>
     <string name="format_current_price">%1$.2f\$</string>
     <string name="find_company_or_ticker">Find company or ticker</string>
+    <string name="stocks">Stocks</string>
+    <string name="favorite">Favorite</string>
+
     <!--    Detail fragment     -->
     <string name="base_information">Base information</string>
     <string name="financial_performance">Financial performance</string>
@@ -15,7 +18,6 @@
 
     <!--    Search fragment     -->
     <string name="you_ve_searched_for_this">You\'ve searched for this</string>
-    <string name="stocks">Stocks</string>
     <!--    end Search fragment     -->
 
 </resources>
