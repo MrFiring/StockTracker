@@ -10,6 +10,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import ru.mrfiring.stocktracker.SingleLiveEvent
 import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 import ru.mrfiring.stocktracker.domain.GetStocksAndQuotesLiveDataCase
@@ -72,6 +73,8 @@ class StocksViewModel @Inject constructor(
         } catch (ex: IOException) {
             Log.e("refresh", "NETWORK TROUBLE: ${ex.stackTraceToString()}")
             _isNetworkError.value = true
+        } catch (ex: HttpException) {
+            Log.e("refresh", "HTTP exception")
         }
     }
 

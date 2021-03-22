@@ -20,4 +20,8 @@
     <string name="you_ve_searched_for_this">You\'ve searched for this</string>
     <!--    end Search fragment     -->
 
+    <!--    Favorites fragment-->
+    <string name="no_favorites">There is no favorites yet. \n You can add them with long click on stock.</string>
+    <!--    end Favorites fragment-->
+
 </resources>

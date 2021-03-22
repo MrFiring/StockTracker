@@ -36,6 +36,13 @@ class FavoriteFragment : Fragment() {
         viewModel.favorites.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
                 favoriteAdapter.submitList(it)
+
+                if (it.isEmpty()) {
+                    binding.noFavoritesText.visibility = View.VISIBLE
+                } else {
+                    binding.noFavoritesText.visibility = View.GONE
+                }
+
             }
         }
 
