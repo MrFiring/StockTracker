@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import ru.mrfiring.stocktracker.databinding.FragmentFavoriteBinding
+import ru.mrfiring.stocktracker.presentation.home.HomeFragmentDirections
 
 @AndroidEntryPoint
 class FavoriteFragment : Fragment() {
@@ -30,10 +33,16 @@ class FavoriteFragment : Fragment() {
 
         binding.favoritesList.adapter = favoriteAdapter
 
+        viewModel.favorites.observe(viewLifecycleOwner) {
+            lifecycleScope.launch {
+                favoriteAdapter.submitList(it)
+            }
+        }
+
 
         viewModel.navigateToDetailFragment.observe(viewLifecycleOwner) {
             this.findNavController().navigate(
-                FavoriteFragmentDirections.actionFavoriteFragmentToDetailsFragment(
+                HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
                     it.symbol
                 )
             )

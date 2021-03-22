@@ -1,4 +1,4 @@
-package ru.mrfiring.stocktracker.presentation.home
+package ru.mrfiring.stocktracker.presentation.home.stocks
 
 import android.app.Application
 import android.util.Log
@@ -19,7 +19,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class StocksViewModel @Inject constructor(
     application: Application,
     private val getStocksAndQuotesLiveDataCase: GetStocksAndQuotesLiveDataCase,
     private val refreshQuotesUseCase: RefreshQuotesUseCase,

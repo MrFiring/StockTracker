@@ -1,4 +1,4 @@
-package ru.mrfiring.stocktracker.presentation.home
+package ru.mrfiring.stocktracker.presentation.home.stocks
 
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -6,7 +6,7 @@ import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 import ru.mrfiring.stocktracker.presentation.reusable.diffutil.StockSymbolDiffUtilCallback
 import ru.mrfiring.stocktracker.presentation.reusable.viewholder.StockViewHolder
 
-class HomeRecyclerViewAdapter(
+class StocksRecyclerViewAdapter(
     private val onClick: (DomainStockSymbol) -> Unit,
     private val onLongClick: (DomainStockSymbol) -> Unit
 ) : PagingDataAdapter<DomainStockSymbol, StockViewHolder>(
