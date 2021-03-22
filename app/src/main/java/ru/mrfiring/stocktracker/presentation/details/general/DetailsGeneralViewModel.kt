@@ -1,4 +1,4 @@
-package ru.mrfiring.stocktracker.presentation.details
+package ru.mrfiring.stocktracker.presentation.details.general
 
 import android.app.Application
 import androidx.lifecycle.*
@@ -15,7 +15,7 @@ enum class LoadingStatus {
 }
 
 @HiltViewModel
-class DetailsViewModel @Inject constructor(
+class DetailsGeneralViewModel @Inject constructor(
     application: Application,
     private val savedStateHandle: SavedStateHandle,
     private val getCompanyBySymbolUseCase: GetCompanyBySymbolUseCase,
