@@ -16,6 +16,9 @@ interface StockDao {
     @Query("select count(*) from databasestocksymbol")
     suspend fun getStocksAndQuotesCount(): Int
 
+    @Query("select * from databasestocksymbol where isFavorite = 1 order by displaySymbol")
+    suspend fun getFavoriteList(): List<StockSymbolAndQuote>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(stocks: List<DatabaseStockSymbol>)
 
