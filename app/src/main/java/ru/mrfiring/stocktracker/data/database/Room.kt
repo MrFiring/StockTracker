@@ -66,7 +66,7 @@ interface CompanyDao {
         DatabaseCompanyNews::class,
         DatabaseSearchHistory::class
     ],
-    version = 5
+    version = 6
 )
 abstract class StockDatabase : RoomDatabase() {
     abstract val stockDao: StockDao

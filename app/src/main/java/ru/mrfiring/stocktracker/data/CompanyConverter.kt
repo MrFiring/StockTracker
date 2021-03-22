@@ -31,12 +31,12 @@ fun DatabaseCompany.asDomainObject(
 
 fun CompanyNews.asDatabaseObject(): DatabaseCompanyNews {
     return DatabaseCompanyNews(
-        symbol, category, datetime, id, imgUrl, sourceName, summary, articleUrl
+        symbol, category, datetime, headline, id, imgUrl, sourceName, summary, articleUrl
     )
 }
 
 fun DatabaseCompanyNews.asDomainObject(): DomainCompanyNews {
     return DomainCompanyNews(
-        symbol, category, datetime, id, imgUrl, sourceName, summary, articleUrl
+        symbol, category, datetime, headline, id, imgUrl, sourceName, summary, articleUrl
     )
 }

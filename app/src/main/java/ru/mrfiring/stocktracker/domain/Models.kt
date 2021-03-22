@@ -39,6 +39,7 @@ data class DomainCompanyNews(
     val symbol: String,
     val category: String,
     val datetime: Long,
+    val headline: String,
     val id: Long,
     val imgUrl: String,
     val sourceName: String,

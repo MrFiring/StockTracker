@@ -130,6 +130,7 @@ data class CompanyNews(
     val symbol: String,
     val category: String,
     val datetime: Long,
+    val headline: String,
     val id: Long,
     @Json(name = "image")
     val imgUrl: String,
