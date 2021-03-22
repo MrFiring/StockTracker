@@ -53,11 +53,11 @@ data class DatabaseCompany(
 
 @Entity
 data class DatabaseCompanyNews(
-    @PrimaryKey(autoGenerate = false)
     val symbol: String,
     val category: String,
     val datetime: Long,
     val headline: String,
+    @PrimaryKey(autoGenerate = false)
     val id: Long,
     val imgUrl: String,
     val sourceName: String,
