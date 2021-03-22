@@ -88,4 +88,6 @@ dependencies {
     //lib to generate missing logo's
     implementation 'com.first.avatargenerator:AvatarImageGenerator:1.4'
 
+    //To work with time easier
+    implementation "joda-time:joda-time:$version_joda"
 }

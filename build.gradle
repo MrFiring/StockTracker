@@ -16,6 +16,7 @@ buildscript {
         version_hilt = '2.33-beta'
         version_coroutines = "1.0.1"
         version_paging = "3.0.0-beta02"
+        version_joda = "2.10.10"
     }
 
     repositories {
