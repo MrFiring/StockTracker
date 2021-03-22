@@ -1,5 +1,6 @@
 package ru.mrfiring.stocktracker.data.database
 
+import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.*
 import ru.mrfiring.stocktracker.data.database.relations.StockSymbolAndQuote
@@ -17,7 +18,7 @@ interface StockDao {
     suspend fun getStocksAndQuotesCount(): Int
 
     @Query("select * from databasestocksymbol where isFavorite = 1 order by displaySymbol")
-    suspend fun getFavoriteList(): List<StockSymbolAndQuote>
+    fun getFavoriteLiveData(): LiveData<List<StockSymbolAndQuote>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(stocks: List<DatabaseStockSymbol>)

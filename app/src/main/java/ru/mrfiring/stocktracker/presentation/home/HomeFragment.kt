@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import ru.mrfiring.stocktracker.R
 import ru.mrfiring.stocktracker.databinding.FragmentHomeBinding
 
 @AndroidEntryPoint
@@ -25,9 +26,9 @@ class HomeFragment : Fragment() {
         binding.homePager.adapter = pagerAdapter
         TabLayoutMediator(binding.homeTabs, binding.homePager) { tab, position ->
             tab.text = if (position == 0) {
-                "Stocks"
+                getString(R.string.stocks)
             } else {
-                "Favorite"
+                getString(R.string.favorite)
             }
         }.attach()
 

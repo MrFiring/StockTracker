@@ -7,7 +7,7 @@ interface StockRepository {
 
     fun getStocksAndQuotesLiveData(): LiveData<PagingData<DomainStockSymbol>>
 
-    suspend fun getFavoriteList(): List<DomainStockSymbol>
+    fun getFavoriteLiveData(): LiveData<List<DomainStockSymbol>>
 
     suspend fun updateStockSymbol(item: DomainStockSymbol)
 

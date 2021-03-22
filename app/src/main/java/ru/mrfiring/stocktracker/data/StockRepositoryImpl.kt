@@ -46,11 +46,13 @@ class StockRepositoryImpl @ExperimentalPagingApi
 
     }
 
-    override suspend fun getFavoriteList(): List<DomainStockSymbol> {
-        return stockDao.getFavoriteList().map {
-            it.asDomainObject(
-                logoUrl = "$BASE_LOGO_URL?symbol=${it.stockSymbol.displaySymbol}"
-            )
+    override fun getFavoriteLiveData(): LiveData<List<DomainStockSymbol>> {
+        return stockDao.getFavoriteLiveData().map { list ->
+            list.map {
+                it.asDomainObject(
+                    logoUrl = "$BASE_LOGO_URL?symbol=${it.stockSymbol.displaySymbol}"
+                )
+            }
         }
     }
 

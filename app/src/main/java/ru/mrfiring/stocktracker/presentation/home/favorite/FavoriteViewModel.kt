@@ -9,14 +9,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.mrfiring.stocktracker.SingleLiveEvent
 import ru.mrfiring.stocktracker.domain.DomainStockSymbol
-import ru.mrfiring.stocktracker.domain.GetFavoriteListUseCase
+import ru.mrfiring.stocktracker.domain.GetFavoriteLiveDataUseCase
 import ru.mrfiring.stocktracker.domain.UpdateStockSymbolUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
     application: Application,
-    private val getFavoriteListUseCase: GetFavoriteListUseCase,
+    private val getFavoriteLiveDataUseCase: GetFavoriteLiveDataUseCase,
     private val updateStockSymbolUseCase: UpdateStockSymbolUseCase
 ) : AndroidViewModel(application) {
 
@@ -24,7 +24,7 @@ class FavoriteViewModel @Inject constructor(
     val navigateToDetailFragment: LiveData<DomainStockSymbol>
         get() = _navigateToDetailFragment
 
-    private val _favorites = MutableLiveData<List<DomainStockSymbol>>()
+    private var _favorites = MutableLiveData<List<DomainStockSymbol>>()
     val favorites: LiveData<List<DomainStockSymbol>>
         get() = _favorites
 
@@ -33,7 +33,7 @@ class FavoriteViewModel @Inject constructor(
     }
 
     private fun bindData() = viewModelScope.launch {
-        _favorites.value = getFavoriteListUseCase()
+        _favorites = getFavoriteLiveDataUseCase() as MutableLiveData<List<DomainStockSymbol>>
     }
 
     fun updateSymbol(symbol: DomainStockSymbol) = viewModelScope.launch {
@@ -45,7 +45,6 @@ class FavoriteViewModel @Inject constructor(
             !symbol.isFavorite
         )
         updateStockSymbolUseCase(newSymbol)
-        bindData()
     }
 
     fun navigateToDetail(symbol: DomainStockSymbol) {
