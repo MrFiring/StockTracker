@@ -15,7 +15,6 @@ import ru.mrfiring.stocktracker.domain.DomainStockSearchItem
 import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 import ru.mrfiring.stocktracker.domain.GetStockSearchHistoryUseCase
 import ru.mrfiring.stocktracker.domain.SearchStockSymbolUseCase
-import ru.mrfiring.stocktracker.presentation.details.LoadingStatus
 import java.io.IOException
 import javax.inject.Inject
 

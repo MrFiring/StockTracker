@@ -16,7 +16,10 @@ import kotlinx.coroutines.launch
 import ru.mrfiring.stocktracker.databinding.SearchFragmentBinding
 import ru.mrfiring.stocktracker.domain.DomainQuote
 import ru.mrfiring.stocktracker.domain.DomainStockSymbol
-import ru.mrfiring.stocktracker.presentation.details.LoadingStatus
+
+enum class LoadingStatus {
+    LOADING, ERROR, DONE
+}
 
 @FlowPreview
 @AndroidEntryPoint
