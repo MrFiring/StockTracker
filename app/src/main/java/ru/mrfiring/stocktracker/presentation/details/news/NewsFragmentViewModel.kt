@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
+import ru.mrfiring.stocktracker.SingleLiveEvent
 import ru.mrfiring.stocktracker.domain.DomainCompanyNews
 import ru.mrfiring.stocktracker.domain.FetchCompanyNewsListUseCase
 import ru.mrfiring.stocktracker.domain.GetCompanyNewsListBySymbolUseCase
@@ -33,6 +34,9 @@ class NewsFragmentViewModel @Inject constructor(
     val news: LiveData<List<DomainCompanyNews>>
         get() = _news
 
+    private val _openWebpage = SingleLiveEvent<DomainCompanyNews>()
+    val openWebpage: LiveData<DomainCompanyNews>
+        get() = _openWebpage
 
     init {
         bindData()
@@ -57,4 +61,7 @@ class NewsFragmentViewModel @Inject constructor(
 
     fun retry() = bindData()
 
+    fun openSourceWebsite(item: DomainCompanyNews) {
+        _openWebpage.value = item
+    }
 }

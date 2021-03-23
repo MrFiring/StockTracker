@@ -38,6 +38,8 @@ class NewsRecyclerViewAdapter(
                 sourceText.text = item.sourceName
                 summaryText.text = item.summary
 
+                moreButton.setOnClickListener { onClick(item) }
+
                 val imgUri = item.imgUrl.toUri().buildUpon().scheme("https").build()
                 Glide.with(context)
                     .load(imgUri)

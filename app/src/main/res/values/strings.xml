@@ -17,6 +17,8 @@
 
     <string name="format_day_open">Day open: %1$.2f\$</string>
     <string name="format_previous_day_open">Previous day open: %1$.2f\$</string>
+
+    <string name="more">More</string>
     <!--    end Detail fragment     -->
 
     <!--    Search fragment     -->

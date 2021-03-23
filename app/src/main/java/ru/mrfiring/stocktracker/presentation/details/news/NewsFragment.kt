@@ -1,5 +1,8 @@
 package ru.mrfiring.stocktracker.presentation.details.news
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,7 +31,7 @@ class NewsFragment : Fragment() {
         binding = FragmentNewsBinding.inflate(inflater, container, false)
 
         val adapter = NewsRecyclerViewAdapter {
-
+            viewModel.openSourceWebsite(it)
         }
 
         binding.newsList.adapter = adapter
@@ -36,6 +39,17 @@ class NewsFragment : Fragment() {
         viewModel.news.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
                 adapter.submitList(it)
+            }
+        }
+
+        viewModel.openWebpage.observe(viewLifecycleOwner) {
+
+            val pageUri = Uri.parse(it.articleUrl)
+            val intent = Intent(Intent.ACTION_VIEW, pageUri)
+            try {
+                startActivity(intent)
+            } catch (ex: ActivityNotFoundException) {
+
             }
         }
 
