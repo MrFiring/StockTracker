@@ -31,6 +31,10 @@ class DetailsGeneralFragment : Fragment() {
             setupInformationCard(it)
         }
 
+        binding.generalNetwork.networkErrorImage.setOnClickListener {
+            generalViewModel.retry()
+        }
+
         generalViewModel.status.observe(viewLifecycleOwner) {
             when (it) {
                 LoadingStatus.LOADING -> {
@@ -40,7 +44,7 @@ class DetailsGeneralFragment : Fragment() {
                     setIsLoaded()
                 }
                 else -> {
-
+                    setIsError()
                 }
             }
         }
@@ -66,7 +70,6 @@ class DetailsGeneralFragment : Fragment() {
                 company.finhubIndustry
             )
 
-
             detailMarketCap.text = getString(
                 R.string.format_market_cap,
                 company.marketCapitalization
@@ -75,21 +78,24 @@ class DetailsGeneralFragment : Fragment() {
                 R.string.format_number_outstanding,
                 company.shareOutStanding
             )
-
-
         }
-
-
     }
 
     private fun setIsLoading() {
         binding.detailLoadingBar.visibility = View.VISIBLE
         binding.companyCard.visibility = View.GONE
+        binding.generalNetwork.networkErrorContainer.visibility = View.GONE
     }
 
     private fun setIsLoaded() {
         binding.detailLoadingBar.visibility = View.GONE
         binding.companyCard.visibility = View.VISIBLE
+    }
+
+    private fun setIsError() {
+        binding.generalNetwork.networkErrorContainer.visibility = View.VISIBLE
+        binding.detailLoadingBar.visibility = View.GONE
+        binding.companyCard.visibility = View.GONE
     }
 
     companion object {

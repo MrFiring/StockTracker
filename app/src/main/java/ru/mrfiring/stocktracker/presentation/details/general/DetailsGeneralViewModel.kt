@@ -51,4 +51,6 @@ class DetailsGeneralViewModel @Inject constructor(
         }
     }
 
+    fun retry() = bindCompany()
+
 }
