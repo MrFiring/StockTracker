@@ -1,11 +1,11 @@
 package ru.mrfiring.stocktracker.di
 
-import android.util.Log
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import org.joda.time.DateTime
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import ru.mrfiring.stocktracker.data.network.BASE_URL
@@ -17,15 +17,26 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    //Created an interceptor to throttle requests and prevent 429 error.
+    //API returns a period of time to wait before next request in header
+    //Interceptor blocks the thread up to this time and send new request.
+    //One second was added to result millis to avoid mistake with calculations.
+
     @Singleton
     @Provides
     fun provideHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor {
                 val response = it.proceed(it.request())
+
                 if (!response.isSuccessful && response.code() == 429) {
-                    Thread.sleep(3000)
-                    Log.e("HttpClient", "Error 429 caught")
+                    val rateLimitReset = response.header("x-ratelimit-reset")
+                    rateLimitReset?.let { rateLim ->
+                        val curTime = DateTime.now().millis / 1000L
+                        val resetTime = rateLim.toLong() //it's in seconds UTC
+                        val dt = resetTime - curTime
+                        Thread.sleep((dt + 1) * 1000L)
+                    }
                     response.close()
                     it.proceed(it.request())
                 } else {
