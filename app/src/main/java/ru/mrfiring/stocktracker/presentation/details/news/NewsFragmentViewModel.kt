@@ -55,4 +55,6 @@ class NewsFragmentViewModel @Inject constructor(
         }
     }
 
+    fun retry() = bindData()
+
 }
