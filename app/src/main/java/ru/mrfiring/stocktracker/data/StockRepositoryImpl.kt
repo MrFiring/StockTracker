@@ -46,6 +46,15 @@ class StockRepositoryImpl @ExperimentalPagingApi
 
     }
 
+    override suspend fun getStockAndQuoteBySymbol(symbol: String): DomainStockSymbol =
+        withContext(Dispatchers.IO) {
+            return@withContext stockDao.getStockAndQuoteBySymbol(symbol).let {
+                it.asDomainObject(
+                    logoUrl = "$BASE_LOGO_URL?symbol=${it.stockSymbol.displaySymbol}"
+                )
+            }
+        }
+
     override fun getFavoriteLiveData(): LiveData<List<DomainStockSymbol>> {
         return stockDao.getFavoriteLiveData().map { list ->
             list.map {

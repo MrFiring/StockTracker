@@ -11,6 +11,9 @@ interface StockDao {
     @Query("select * from databasestocksymbol order by displaySymbol")
     fun getStocksAndQuotes(): PagingSource<Int, StockSymbolAndQuote>
 
+    @Query("select * from databasestocksymbol where displaySymbol = :symbol")
+    suspend fun getStockAndQuoteBySymbol(symbol: String): StockSymbolAndQuote
+
     @Query("select displaySymbol from databasestocksymbol order by displaySymbol")
     suspend fun getTickerList(): List<String>
 
