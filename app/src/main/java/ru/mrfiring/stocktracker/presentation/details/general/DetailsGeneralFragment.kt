@@ -1,15 +1,19 @@
 package ru.mrfiring.stocktracker.presentation.details.general
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import ru.mrfiring.stocktracker.R
 import ru.mrfiring.stocktracker.databinding.FragmentDetailsGeneralBinding
 import ru.mrfiring.stocktracker.domain.DomainCompany
+import ru.mrfiring.stocktracker.domain.DomainQuote
 
 private const val ARG_PARAM = "symbol"
 
@@ -29,6 +33,15 @@ class DetailsGeneralFragment : Fragment() {
 
         generalViewModel.company.observe(viewLifecycleOwner) {
             setupInformationCard(it)
+        }
+
+        generalViewModel.stock.observe(viewLifecycleOwner) {
+            setupPriceCard(it.quote)
+            setupFavoriteMark(it.isFavorite)
+        }
+
+        binding.favoriteBtn.setOnClickListener {
+            generalViewModel.markAsFavorite()
         }
 
         binding.generalNetwork.networkErrorImage.setOnClickListener {
@@ -81,15 +94,80 @@ class DetailsGeneralFragment : Fragment() {
         }
     }
 
+    @SuppressLint("StringFormatInvalid")
+    private fun setupPriceCard(quote: DomainQuote) {
+        binding.apply {
+            detailDayLow.text = getString(
+                R.string.format_current_price,
+                quote.dayLow
+            )
+            detailDayHigh.text = getString(
+                R.string.format_current_price,
+                quote.dayHigh
+            )
+            detailCurrentPrice.text = getString(
+                R.string.format_current_price,
+                quote.current
+            )
+
+            val deltaPrice = quote.getDeltaPrice()
+            if (deltaPrice >= 0) {
+                detailDeltaPrice.setTextColor(Color.GREEN)
+            } else {
+                detailDeltaPrice.setTextColor(Color.RED)
+            }
+
+            detailDeltaPrice.text = getString(
+                R.string.format_delta_price,
+                deltaPrice,
+                quote.getDeltaPricePercent()
+            )
+
+            detailDayOpen.text = getString(
+                R.string.format_day_open,
+                quote.dayOpen
+            )
+            detailPreviousOpen.text = getString(
+                R.string.format_previous_day_open,
+                quote.previousDayOpen
+            )
+        }
+    }
+
+    private fun setupFavoriteMark(isFavorite: Boolean) {
+        binding.apply {
+            if (isFavorite) {
+
+                favoriteBtn.setImageDrawable(
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        android.R.drawable.btn_star_big_on,
+                        null
+                    )
+                )
+            } else {
+                favoriteBtn.setImageDrawable(
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        android.R.drawable.btn_star_big_off,
+                        null
+                    )
+                )
+            }
+        }
+    }
+
     private fun setIsLoading() {
         binding.detailLoadingBar.visibility = View.VISIBLE
         binding.companyCard.visibility = View.GONE
+        binding.detailStockCard.visibility = View.GONE
         binding.generalNetwork.networkErrorContainer.visibility = View.GONE
     }
 
     private fun setIsLoaded() {
-        binding.detailLoadingBar.visibility = View.GONE
         binding.companyCard.visibility = View.VISIBLE
+        binding.detailStockCard.visibility = View.VISIBLE
+        binding.detailLoadingBar.visibility = View.GONE
     }
 
     private fun setIsError() {

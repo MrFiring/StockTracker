@@ -4,9 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import ru.mrfiring.stocktracker.domain.DomainCompany
-import ru.mrfiring.stocktracker.domain.FetchCompanyUseCase
-import ru.mrfiring.stocktracker.domain.GetCompanyBySymbolUseCase
+import ru.mrfiring.stocktracker.domain.*
 import java.io.IOException
 import javax.inject.Inject
 
@@ -19,7 +17,9 @@ class DetailsGeneralViewModel @Inject constructor(
     application: Application,
     private val savedStateHandle: SavedStateHandle,
     private val getCompanyBySymbolUseCase: GetCompanyBySymbolUseCase,
-    private val fetchCompanyUseCase: FetchCompanyUseCase
+    private val fetchCompanyUseCase: FetchCompanyUseCase,
+    private val getStockAndQuoteBySymbolUseCase: GetStockAndQuoteBySymbolUseCase,
+    private val updateStockSymbolUseCase: UpdateStockSymbolUseCase
 ) : AndroidViewModel(application) {
 
     private val symbol = savedStateHandle.get<String>("symbol") ?: ""
@@ -32,18 +32,22 @@ class DetailsGeneralViewModel @Inject constructor(
     val company: LiveData<DomainCompany>
         get() = _company
 
+    private val _stock = MutableLiveData<DomainStockSymbol>()
+    val stock: LiveData<DomainStockSymbol>
+        get() = _stock
 
     init {
-        bindCompany()
+        bindData()
     }
 
-    private fun bindCompany() = viewModelScope.launch {
+    private fun bindData() = viewModelScope.launch {
         try {
             _status.value = LoadingStatus.LOADING
             fetchCompanyUseCase(symbol)
             val companyInfo = getCompanyBySymbolUseCase(symbol)
             companyInfo?.let {
                 _company.value = it
+                _stock.value = getStockAndQuoteBySymbolUseCase(symbol)
                 _status.value = LoadingStatus.DONE
             }
         } catch (ex: IOException) {
@@ -51,6 +55,17 @@ class DetailsGeneralViewModel @Inject constructor(
         }
     }
 
-    fun retry() = bindCompany()
+    fun retry() = bindData()
+
+    fun markAsFavorite() = viewModelScope.launch {
+        val curStock = _stock.value
+        curStock?.let {
+            val newStock = DomainStockSymbol(
+                it.symbol, it.companyName, it.logoUrl, it.quote, !it.isFavorite
+            )
+            _stock.value = newStock
+            updateStockSymbolUseCase(newStock)
+        }
+    }
 
 }

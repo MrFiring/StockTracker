@@ -14,6 +14,9 @@
     <string name="format_market_cap">Market capitalization: %1$.2f\$</string>
     <string name="format_number_outstanding">Number of outstanding shares: %1$.2f</string>
     <string name="format_industry">Industry: %1$s</string>
+
+    <string name="format_day_open">Day open: %1$.2f\$</string>
+    <string name="format_previous_day_open">Previous day open: %1$.2f\$</string>
     <!--    end Detail fragment     -->
 
     <!--    Search fragment     -->
@@ -23,5 +26,6 @@
     <!--    Favorites fragment-->
     <string name="no_favorites">There is no favorites yet. \n You can add them with long click on stock.</string>
     <!--    end Favorites fragment-->
+
 
 </resources>
