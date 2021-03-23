@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.launch
 import ru.mrfiring.stocktracker.databinding.SearchFragmentBinding
@@ -21,6 +22,7 @@ enum class LoadingStatus {
     LOADING, ERROR, DONE
 }
 
+@ExperimentalCoroutinesApi
 @FlowPreview
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
