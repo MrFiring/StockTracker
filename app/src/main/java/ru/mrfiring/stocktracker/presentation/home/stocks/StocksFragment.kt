@@ -43,16 +43,26 @@ class StocksFragment : Fragment() {
         )
 
 
-        recyclerAdapter.addLoadStateListener {
-            if (it.mediator?.refresh is LoadState.Loading) {
-                setIsLoading()
+        recyclerAdapter.addLoadStateListener { state ->
+            state.mediator?.let {
+                if (it.refresh is LoadState.Loading) {
+                    setIsLoading()
+                }
+                //Used to start loading of stocks on first run.
+                if (it.prepend is LoadState.Loading) {
+                    stocksViewModel.onColdStart()
+                }
             }
-            if (it.source.refresh is LoadState.Loading) {
+            if (state.refresh is LoadState.Loading) {
                 setIsLoading()
             } else {
                 setIsLoaded()
             }
 
+        }
+
+        stocksViewModel.coldStartIndicator.observe(viewLifecycleOwner) {
+            stocksViewModel.coldStockUpdate(it)
         }
 
         binding.stockList.adapter = recyclerAdapter

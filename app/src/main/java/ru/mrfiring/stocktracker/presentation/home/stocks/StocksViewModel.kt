@@ -38,6 +38,10 @@ class StocksViewModel @Inject constructor(
     val isNetworkError
         get() = _isNetworkError
 
+    private val _coldStartIndicator = MutableLiveData<Boolean>()
+    val coldStartIndicator: LiveData<Boolean>
+        get() = _coldStartIndicator
+
     private var _stocks = MutableLiveData<PagingData<DomainStockSymbol>>()
     val stocks: LiveData<PagingData<DomainStockSymbol>>
         get() = _stocks
@@ -75,6 +79,20 @@ class StocksViewModel @Inject constructor(
             _isNetworkError.value = true
         } catch (ex: HttpException) {
             Log.e("refresh", "HTTP exception")
+        }
+    }
+
+    fun onColdStart() {
+        if (_coldStartIndicator.value != null) {
+            return
+        }
+        _coldStartIndicator.value = true
+    }
+
+    fun coldStockUpdate(coldFlag: Boolean) {
+        if (coldFlag) {
+            refreshStocks()
+            _coldStartIndicator.value = false
         }
     }
 
