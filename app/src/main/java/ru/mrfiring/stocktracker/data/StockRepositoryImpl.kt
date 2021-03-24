@@ -9,7 +9,6 @@ import kotlinx.coroutines.withContext
 import ru.mrfiring.stocktracker.data.database.DatabaseSearchHistory
 import ru.mrfiring.stocktracker.data.database.DatabaseStockQuote
 import ru.mrfiring.stocktracker.data.database.StockDao
-import ru.mrfiring.stocktracker.data.network.BASE_LOGO_URL
 import ru.mrfiring.stocktracker.data.network.StockSearchResult
 import ru.mrfiring.stocktracker.data.network.StockService
 import ru.mrfiring.stocktracker.data.paging.StockMediator
@@ -38,9 +37,7 @@ class StockRepositoryImpl @ExperimentalPagingApi
             remoteMediator = stockMediator,
         ).liveData.map {
             it.map { symbolAndQuote ->
-                symbolAndQuote.asDomainObject(
-                    logoUrl = "$BASE_LOGO_URL?symbol=${symbolAndQuote.stockSymbol.displaySymbol}"
-                )
+                symbolAndQuote.asDomainObject()
             }
         }
 
@@ -49,18 +46,14 @@ class StockRepositoryImpl @ExperimentalPagingApi
     override suspend fun getStockAndQuoteBySymbol(symbol: String): DomainStockSymbol =
         withContext(Dispatchers.IO) {
             return@withContext stockDao.getStockAndQuoteBySymbol(symbol).let {
-                it.asDomainObject(
-                    logoUrl = "$BASE_LOGO_URL?symbol=${it.stockSymbol.displaySymbol}"
-                )
+                it.asDomainObject()
             }
         }
 
     override fun getFavoriteLiveData(): LiveData<List<DomainStockSymbol>> {
         return stockDao.getFavoriteLiveData().map { list ->
             list.map {
-                it.asDomainObject(
-                    logoUrl = "$BASE_LOGO_URL?symbol=${it.stockSymbol.displaySymbol}"
-                )
+                it.asDomainObject()
             }
         }
     }

@@ -48,6 +48,10 @@ class DetailsGeneralFragment : Fragment() {
             generalViewModel.retry()
         }
 
+        generalViewModel.unsupportedSymbol.observe(viewLifecycleOwner) {
+            binding.detailStockCard.visibility = View.GONE
+        }
+
         generalViewModel.status.observe(viewLifecycleOwner) {
             when (it) {
                 LoadingStatus.LOADING -> {
@@ -166,7 +170,9 @@ class DetailsGeneralFragment : Fragment() {
 
     private fun setIsLoaded() {
         binding.companyCard.visibility = View.VISIBLE
-        binding.detailStockCard.visibility = View.VISIBLE
+        if (generalViewModel.unsupportedSymbol.value == null) {
+            binding.detailStockCard.visibility = View.VISIBLE
+        }
         binding.detailLoadingBar.visibility = View.GONE
     }
 

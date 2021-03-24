@@ -96,18 +96,18 @@ data class StockSearchItem(
 
 @JsonClass(generateAdapter = true)
 data class CompanyProfile(
-    val country: String,
-    val currency: String,
-    val exchange: String,
-    val ipo: String,
-    val marketCapitalization: Double,
-    val name: String,
-    val phone: String,
-    @Json(name = "shareOutstanding") val shareOutStanding: Double,
-    val ticker: String,
-    @Json(name = "weburl") val webUrl: String,
-    @Json(name = "logo") val logoUrl: String,
-    val finnhubIndustry: String
+    val country: String?,
+    val currency: String?,
+    val exchange: String?,
+    val ipo: String?,
+    val marketCapitalization: Double?,
+    val name: String?,
+    val phone: String?,
+    @Json(name = "shareOutstanding") val shareOutStanding: Double?,
+    val ticker: String?,
+    @Json(name = "weburl") val webUrl: String?,
+    @Json(name = "logo") val logoUrl: String?,
+    val finnhubIndustry: String?
 )
 
 /*

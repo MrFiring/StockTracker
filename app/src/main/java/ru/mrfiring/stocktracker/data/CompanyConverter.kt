@@ -11,15 +11,15 @@ import ru.mrfiring.stocktracker.domain.DomainCompanyNews
 fun CompanyProfile.asDatabaseObject(symbol: String): DatabaseCompany {
     return DatabaseCompany(
         symbol,
-        exchange,
-        ipo,
-        marketCapitalization,
-        name,
-        phone,
-        shareOutStanding,
-        webUrl,
-        logoUrl,
-        finnhubIndustry
+        exchange ?: "Unknown",
+        ipo ?: "",
+        marketCapitalization ?: 0.0,
+        name ?: "Unknown",
+        phone ?: "Unknown",
+        shareOutStanding ?: 0.0,
+        webUrl ?: "Unknown",
+        logoUrl ?: "Unknown",
+        finnhubIndustry ?: "Unknown"
     )
 }
 

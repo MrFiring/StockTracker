@@ -3,6 +3,7 @@ package ru.mrfiring.stocktracker.data
 import ru.mrfiring.stocktracker.data.database.DatabaseStockQuote
 import ru.mrfiring.stocktracker.data.database.DatabaseStockSymbol
 import ru.mrfiring.stocktracker.data.database.relations.StockSymbolAndQuote
+import ru.mrfiring.stocktracker.data.network.BASE_LOGO_URL
 import ru.mrfiring.stocktracker.data.network.StockQuote
 import ru.mrfiring.stocktracker.data.network.StockSearchItem
 import ru.mrfiring.stocktracker.data.network.StockSymbol
@@ -14,13 +15,11 @@ fun StockSymbol.asDatabaseObject(): DatabaseStockSymbol {
     return DatabaseStockSymbol(displaySymbol, description, currency, figi, mic, type, false)
 }
 
-fun StockSymbolAndQuote.asDomainObject(
-    logoUrl: String
-): DomainStockSymbol {
+fun StockSymbolAndQuote.asDomainObject(): DomainStockSymbol {
     return DomainStockSymbol(
         stockSymbol.displaySymbol,
         stockSymbol.description,
-        logoUrl,
+        "$BASE_LOGO_URL?symbol=${stockSymbol.displaySymbol}",
         stockQuote?.asDomainModel() ?: DomainQuote(0.0, 0.0, 0.0, 0.0, 0.0),
         stockSymbol.isFavorite
     )

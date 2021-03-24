@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import ru.mrfiring.stocktracker.SingleLiveEvent
 import ru.mrfiring.stocktracker.domain.*
 import java.io.IOException
 import javax.inject.Inject
@@ -28,6 +29,10 @@ class DetailsGeneralViewModel @Inject constructor(
     val status: LiveData<LoadingStatus>
         get() = _status
 
+    private val _unsupportedSymbol = SingleLiveEvent<Boolean>()
+    val unsupportedSymbol: LiveData<Boolean>
+        get() = _unsupportedSymbol
+
     private val _company = MutableLiveData<DomainCompany>()
     val company: LiveData<DomainCompany>
         get() = _company
@@ -47,12 +52,23 @@ class DetailsGeneralViewModel @Inject constructor(
             val companyInfo = getCompanyBySymbolUseCase(symbol)
             companyInfo?.let {
                 _company.value = it
-                _stock.value = getStockAndQuoteBySymbolUseCase(symbol)
+
+                bindSymbolPriceCard()
+
                 _status.value = LoadingStatus.DONE
             }
         } catch (ex: IOException) {
             _status.value = LoadingStatus.ERROR
         }
+    }
+
+    private suspend fun bindSymbolPriceCard() {
+        try {
+            _stock.value = getStockAndQuoteBySymbolUseCase(symbol)
+        } catch (ex: NullPointerException) {
+            _unsupportedSymbol.value = true
+        }
+
     }
 
     fun retry() = bindData()
