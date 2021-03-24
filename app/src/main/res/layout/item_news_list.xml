@@ -25,21 +25,25 @@
 
         <TextView
             android:id="@+id/headLineText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newsImage" />
+            app:layout_constraintTop_toBottomOf="@+id/newsImage"
+            tools:text="Headline" />
 
         <TextView
             android:id="@+id/sourceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             app:layout_constraintStart_toStartOf="@+id/headLineText"
-            app:layout_constraintTop_toBottomOf="@+id/headLineText" />
+            app:layout_constraintTop_toBottomOf="@+id/headLineText"
+            tools:text="Source name" />
 
         <TextView
             android:id="@+id/summaryText"
@@ -49,10 +53,12 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             app:layout_constraintBottom_toTopOf="@+id/moreButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sourceText" />
+            app:layout_constraintTop_toBottomOf="@+id/sourceText"
+            tools:text="Content" />
 
         <Button
             android:id="@+id/moreButton"
