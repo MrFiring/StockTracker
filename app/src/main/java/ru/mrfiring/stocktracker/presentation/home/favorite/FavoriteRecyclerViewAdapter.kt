@@ -18,6 +18,7 @@ class FavoriteRecyclerViewAdapter(
         val item = getItem(position)
         holder.bind(
             item = item,
+            position = position,
             onLongClick = { onLongClick(item) },
             onClick = { onClick(item) }
         )

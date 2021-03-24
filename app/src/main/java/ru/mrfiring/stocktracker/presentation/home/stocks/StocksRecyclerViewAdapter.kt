@@ -20,7 +20,12 @@ class StocksRecyclerViewAdapter(
     override fun onBindViewHolder(holder: StockViewHolder, position: Int) {
         val item = getItem(position)
         item?.let {
-            holder.bind(it, onClick = onClick, onLongClick = onLongClick)
+            holder.bind(
+                item = it,
+                position = position,
+                onClick = onClick,
+                onLongClick = onLongClick
+            )
         }
     }
 

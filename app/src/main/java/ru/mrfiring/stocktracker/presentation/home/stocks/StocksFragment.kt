@@ -71,7 +71,6 @@ class StocksFragment : Fragment() {
             lifecycleScope.launch {
                 recyclerAdapter.submitData(it)
             }
-
         })
 
         stocksViewModel.isNetworkError.observe(viewLifecycleOwner, Observer {

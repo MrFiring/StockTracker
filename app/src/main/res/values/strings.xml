@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">StockTracker</string>
+    <string name="app_name">Stock tracker</string>
     <string name="format_delta_price">%1$.2f\$ | %2$.2f\%%</string>
     <string name="format_current_price">%1$.2f\$</string>
     <string name="find_company_or_ticker">Find company or ticker</string>

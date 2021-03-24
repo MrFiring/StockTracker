@@ -22,6 +22,7 @@ class StockViewHolder private constructor(
     @SuppressLint("StringFormatInvalid")
     fun bind(
         item: DomainStockSymbol,
+        position: Int,
         onLongClick: (DomainStockSymbol) -> Unit = {},
         onClick: (DomainStockSymbol) -> Unit
     ) {
@@ -36,6 +37,17 @@ class StockViewHolder private constructor(
                 onLongClick(item)
                 true
             }
+
+            if (position % 2 == 0) {
+                listItemCard.setCardBackgroundColor(
+                    context.getColor(R.color.card_background_0)
+                )
+            } else {
+                listItemCard.setCardBackgroundColor(
+                    context.getColor(R.color.card_background_1)
+                )
+            }
+
 
             companyName.text = item.companyName
             symbol.text = item.symbol
@@ -81,6 +93,7 @@ class StockViewHolder private constructor(
                                 item.symbol ?: ""
                             )
                         )
+                        .circleCrop()
                 )
                 .into(symbolLogo)
         }

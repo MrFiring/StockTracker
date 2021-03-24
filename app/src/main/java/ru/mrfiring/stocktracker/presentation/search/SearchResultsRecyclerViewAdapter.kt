@@ -15,7 +15,11 @@ class SearchResultsRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: StockViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item, onClick = onClick)
+        holder.bind(
+            item = item,
+            position = position,
+            onClick = onClick
+        )
     }
 
 }

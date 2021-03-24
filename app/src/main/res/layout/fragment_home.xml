@@ -7,6 +7,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/homeSearch"
+        style="@style/Theme.StockTracker.SearchField"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -21,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusableInTouchMode="false"
-            android:hint="hint" />
+            android:hint="@string/find_company_or_ticker" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.tabs.TabLayout
@@ -31,13 +32,15 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homeSearch" />
+        app:layout_constraintTop_toBottomOf="@+id/homeSearch"
+        app:tabGravity="start"
+        app:tabIndicatorGravity="bottom"
+        app:tabMode="scrollable" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/homePager"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
