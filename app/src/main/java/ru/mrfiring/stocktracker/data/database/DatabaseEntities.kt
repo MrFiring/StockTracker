@@ -30,8 +30,7 @@ data class DatabaseStockQuote(
 
 @Entity
 data class DatabaseSearchHistory(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    @PrimaryKey(autoGenerate = false)
     val query: String
 )
 
