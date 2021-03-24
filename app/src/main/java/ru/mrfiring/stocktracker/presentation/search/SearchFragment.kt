@@ -74,17 +74,6 @@ class SearchFragment : Fragment() {
 
         //Show loading
         viewModel.status.observe(viewLifecycleOwner) {
-            when (it.historyStatus) {
-                LoadingStatus.LOADING -> {
-                    setHistoryIsLoading()
-                }
-                LoadingStatus.DONE -> {
-                    setHistoryIsLoaded()
-                }
-                else -> {
-                }
-
-            }
 
             it.searchStatus?.let { state ->
                 when (state) {
@@ -97,6 +86,17 @@ class SearchFragment : Fragment() {
                     else -> {
                         showNetworkError()
                     }
+                }
+
+            }
+            when (it.historyStatus) {
+                LoadingStatus.LOADING -> {
+                    setHistoryIsLoading()
+                }
+                LoadingStatus.DONE -> {
+                    setHistoryIsLoaded()
+                }
+                else -> {
                 }
 
             }

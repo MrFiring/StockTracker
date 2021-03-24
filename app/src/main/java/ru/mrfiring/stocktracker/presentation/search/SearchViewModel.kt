@@ -93,14 +93,14 @@ class SearchViewModel @Inject constructor(
             .filter {
                 it.isNotEmpty()
             }
-            .flatMapLatest {
-                flowOf(searchStockSymbolUseCase(it))
-            }
             .onEach {
                 _status.value = CombinedLoadingState(
                     searchStatus = LoadingStatus.LOADING,
-                    historyStatus = _status.value?.historyStatus
+                    historyStatus = null
                 )
+            }
+            .flatMapConcat {
+                flowOf(searchStockSymbolUseCase(it))
             }
             .catch {
                 _status.value = CombinedLoadingState(
@@ -108,7 +108,7 @@ class SearchViewModel @Inject constructor(
                     historyStatus = _status.value?.historyStatus
                 )
             }
-            .collectLatest {
+            .collect {
                 _searchResults.value = it
                 _status.value = CombinedLoadingState(
                     searchStatus = LoadingStatus.DONE,
