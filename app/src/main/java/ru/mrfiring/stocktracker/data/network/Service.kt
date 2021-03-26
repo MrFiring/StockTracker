@@ -33,7 +33,7 @@ interface StockService{
         @Query("from") fromTime: Long,
         @Query("to") toTime: Long,
         @Query("token") token: String = TOKEN
-    )
+    ): StockCandles
 }
 
 interface CompanyService {
