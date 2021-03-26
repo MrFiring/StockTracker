@@ -28,6 +28,19 @@ data class DatabaseStockQuote(
     val time: Double
 )
 
+@Entity(primaryKeys = ["id", "symbol", "resolution"])
+data class DatabaseStockCandle(
+    val id: Int,
+    val symbol: String,
+    val resolution: String,
+    val open: Double,
+    val high: Double,
+    val low: Double,
+    val close: Double,
+    val volume: Long,
+    val timestamp: Long
+)
+
 @Entity
 data class DatabaseSearchHistory(
     @PrimaryKey(autoGenerate = false)

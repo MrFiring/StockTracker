@@ -50,6 +50,43 @@ data class StockQuote(
 
 /*
 {
+  "c": [
+    133.07, ...
+  ],
+  "h": [
+    133.24, ...
+  ],
+  "l": [
+    129.77, ...
+  ],
+  "o": [
+    130.33, ...
+  ],
+  "s": "ok", /// or no_data
+  "t": [
+    1616702402, ...
+  ],
+  "v": [
+    5553966, ...
+  ]
+}
+
+ */
+
+@JsonClass(generateAdapter = true)
+data class StockCandles(
+    @Json(name = "o") val open: List<Double>?,
+    @Json(name = "h") val high: List<Double>?,
+    @Json(name = "l") val low: List<Double>?,
+    @Json(name = "c") val close: List<Double>?,
+    @Json(name = "v") val volume: List<Long>?,
+    @Json(name = "t") val timestamp: List<Long>?,
+    @Json(name = "s") val responseStatus: String
+)
+
+
+/*
+{
     "count": 27,
     "result": [...]
 }
@@ -140,5 +177,6 @@ data class CompanyNews(
     @Json(name = "url")
     val articleUrl: String
 )
+
 
 

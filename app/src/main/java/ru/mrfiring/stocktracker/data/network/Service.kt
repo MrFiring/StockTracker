@@ -25,6 +25,15 @@ interface StockService{
         @Query("q") query: String,
         @Query("token") token: String = TOKEN
     ): StockSearchResult
+
+    @GET("/stock/candle")
+    suspend fun getStockCandles(
+        @Query("symbol") symbol: String,
+        @Query("resolution") resolution: String,
+        @Query("from") fromTime: Long,
+        @Query("to") toTime: Long,
+        @Query("token") token: String = TOKEN
+    )
 }
 
 interface CompanyService {

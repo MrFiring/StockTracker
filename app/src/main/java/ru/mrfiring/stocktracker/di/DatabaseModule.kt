@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.mrfiring.stocktracker.data.database.CompanyDao
+import ru.mrfiring.stocktracker.data.database.StockCandlesDao
 import ru.mrfiring.stocktracker.data.database.StockDao
 import ru.mrfiring.stocktracker.data.database.StockDatabase
 import javax.inject.Singleton
@@ -33,6 +34,12 @@ object DatabaseModule {
     @Provides
     fun provideStockDao(stockDatabase: StockDatabase): StockDao {
         return stockDatabase.stockDao
+    }
+
+    @Singleton
+    @Provides
+    fun provideStockCandlesDao(stockDatabase: StockDatabase): StockCandlesDao {
+        return stockDatabase.stockCandlesDao
     }
 
     @Singleton
