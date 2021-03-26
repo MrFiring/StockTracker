@@ -37,6 +37,10 @@ android {
     }
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -92,5 +96,5 @@ dependencies {
     implementation "joda-time:joda-time:$version_joda"
 
     //Android chart library
-    implementation "com.github.PhilJay:MPAndroidChart:$version_android_chart"
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
