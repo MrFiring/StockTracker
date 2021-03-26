@@ -14,7 +14,7 @@
 
     </style>
 
-    <style name="Theme.StockTracker.SearchField" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="Widget.StockTracker.SearchField" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="shapeAppearance">?attr/shapeAppearanceLargeComponent</item>
         <item name="startIconDrawable">@android:drawable/ic_menu_search</item>
         <item name="endIconMode">clear_text</item>
@@ -25,4 +25,5 @@
         <item name="boxCornerRadiusTopStart">20dp</item>
         <item name="boxStrokeWidthFocused">2dp</item>
     </style>
+
 </resources>

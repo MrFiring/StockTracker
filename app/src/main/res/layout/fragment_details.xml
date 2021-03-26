@@ -6,13 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".presentation.details.DetailsFragment">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/detailToolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/detailTabs"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/detailToolbar" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/detailPager"

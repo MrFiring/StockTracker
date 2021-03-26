@@ -72,7 +72,6 @@ class DetailsGeneralFragment : Fragment() {
     private fun setupInformationCard(company: DomainCompany) {
         binding.apply {
             detailCompanyName.text = company.name
-            detailTicker.text = company.symbol
 
             detailPhone.text = getString(
                 R.string.format_phone,
