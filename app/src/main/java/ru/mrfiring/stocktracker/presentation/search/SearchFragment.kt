@@ -116,12 +116,20 @@ class SearchFragment : Fragment() {
         binding.textInputLayout.setEndIconOnClickListener {
             viewModel.rebindHistory()
         }
+        binding.textInputLayout.setStartIconOnClickListener {
+            viewModel.onNavigateUp()
+        }
 
         //Navigation
         viewModel.navigateToDetail.observe(viewLifecycleOwner) {
             this.findNavController().navigate(
                 SearchFragmentDirections.actionSearchFragmentToDetailsFragment(it.symbol)
             )
+        }
+
+        //Navigate up
+        viewModel.navigateUp.observe(viewLifecycleOwner) {
+            findNavController().navigateUp()
         }
 
         return binding.root

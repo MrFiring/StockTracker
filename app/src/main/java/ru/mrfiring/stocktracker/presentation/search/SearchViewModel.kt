@@ -40,6 +40,10 @@ class SearchViewModel @Inject constructor(
     val navigateToDetail: LiveData<DomainStockSymbol>
         get() = _navigateToDetail
 
+    private val _navigateUp = SingleLiveEvent<Boolean>()
+    val navigateUp: LiveData<Boolean>
+        get() = _navigateUp
+
     private val _queryFlow = MutableSharedFlow<String>()
 
     private val _history = MutableLiveData<List<String>>()
@@ -119,5 +123,9 @@ class SearchViewModel @Inject constructor(
 
     fun onNavigateToDetail(item: DomainStockSymbol) {
         _navigateToDetail.value = item
+    }
+
+    fun onNavigateUp() {
+        _navigateUp.value = true
     }
 }
