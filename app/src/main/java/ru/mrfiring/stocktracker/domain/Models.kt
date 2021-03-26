@@ -19,6 +19,17 @@ data class DomainQuote(
     fun getDeltaPricePercent(): Double = (dayOpen - dayHigh) / dayOpen
 }
 
+data class DomainStockCandles(
+    val symbol: String,
+    val resolution: String,
+    val open: List<Double>,
+    val high: List<Double>,
+    val low: List<Double>,
+    val close: List<Double>,
+    val volume: List<Long>,
+    val timestamp: List<Long>,
+)
+
 data class DomainStockSearchItem(
     val description: String,
     val displaySymbol: String,
