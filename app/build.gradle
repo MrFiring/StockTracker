@@ -90,4 +90,7 @@ dependencies {
 
     //To work with time easier
     implementation "joda-time:joda-time:$version_joda"
+
+    //Android chart library
+    implementation "com.github.PhilJay:MPAndroidChart:$version_android_chart"
 }

@@ -17,11 +17,13 @@ buildscript {
         version_coroutines = "1.0.1"
         version_paging = "3.0.0-beta02"
         version_joda = "2.10.10"
+        version_android_chart = "v3.1.0"
     }
 
     repositories {
         google()
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.0-alpha09'
