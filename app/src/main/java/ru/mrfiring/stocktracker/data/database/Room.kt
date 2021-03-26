@@ -3,7 +3,6 @@ package ru.mrfiring.stocktracker.data.database
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
 import ru.mrfiring.stocktracker.data.database.relations.StockSymbolAndQuote
 
 @Dao
@@ -46,7 +45,7 @@ interface StockDao {
 @Dao
 interface StockCandlesDao {
     @Query("select * from databasestockcandle where symbol= :symbol and resolution = :resolution")
-    fun getStockCandles(symbol: String, resolution: String): Flow<List<DatabaseStockCandle>>
+    suspend fun getStockCandles(symbol: String, resolution: String): List<DatabaseStockCandle>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllStockCandles(candles: List<DatabaseStockCandle>)

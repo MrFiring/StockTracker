@@ -1,8 +1,6 @@
 package ru.mrfiring.stocktracker.data
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import ru.mrfiring.stocktracker.data.database.StockCandlesDao
 import ru.mrfiring.stocktracker.data.network.StockService
@@ -30,9 +28,7 @@ class StockCandlesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getStockCandlesFlow(symbol: String, resolution: String): Flow<DomainStockCandles> {
-        return stockCandlesDao.getStockCandles(symbol, resolution).map {
-            it.asDomainObject()
-        }
+    override suspend fun getStockCandles(symbol: String, resolution: String): DomainStockCandles {
+        return stockCandlesDao.getStockCandles(symbol, resolution).asDomainObject()
     }
 }

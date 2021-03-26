@@ -1,7 +1,5 @@
 package ru.mrfiring.stocktracker.domain
 
-import kotlinx.coroutines.flow.Flow
-
 interface StockCandlesRepository {
 
     suspend fun fetchStockCandles(
@@ -11,5 +9,5 @@ interface StockCandlesRepository {
         toTime: Long
     )
 
-    fun getStockCandlesFlow(symbol: String, resolution: String): Flow<DomainStockCandles>
+    suspend fun getStockCandles(symbol: String, resolution: String): DomainStockCandles
 }
