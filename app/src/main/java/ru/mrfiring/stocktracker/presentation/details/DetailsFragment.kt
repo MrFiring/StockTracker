@@ -34,10 +34,19 @@ class DetailsFragment : Fragment() {
         binding.detailPager.adapter = adapter
 
         TabLayoutMediator(binding.detailTabs, binding.detailPager) { tab, position ->
-            tab.text = if (position == 0) {
-                "General"
-            } else {
-                "News"
+            tab.text = when (position) {
+                0 -> {
+                    "General"
+                }
+                1 -> {
+                    "Chart"
+                }
+                2 -> {
+                    "News"
+                }
+                else -> {
+                    throw IndexOutOfBoundsException("There are no title with this position")
+                }
             }
         }.attach()
 

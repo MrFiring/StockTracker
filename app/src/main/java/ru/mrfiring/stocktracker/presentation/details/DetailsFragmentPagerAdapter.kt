@@ -2,10 +2,11 @@ package ru.mrfiring.stocktracker.presentation.details
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import ru.mrfiring.stocktracker.presentation.details.chart.ChartFragment
 import ru.mrfiring.stocktracker.presentation.details.general.DetailsGeneralFragment
 import ru.mrfiring.stocktracker.presentation.details.news.NewsFragment
 
-private const val NUM_PAGES = 2
+private const val NUM_PAGES = 3
 
 class DetailsFragmentPagerAdapter(
     fragment: Fragment,
@@ -21,6 +22,9 @@ class DetailsFragmentPagerAdapter(
                 DetailsGeneralFragment.newInstance(symbol)
             }
             1 -> {
+                ChartFragment.newInstance(symbol)
+            }
+            2 -> {
                 NewsFragment.newInstance(symbol)
             }
             else -> {
