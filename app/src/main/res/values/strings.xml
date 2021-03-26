@@ -19,6 +19,8 @@
     <string name="format_previous_day_open">Previous day open: %1$.2f\$</string>
 
     <string name="more">More</string>
+
+    <string name="no_news_msg">Ooops…There are no news for the last 4 days</string>
     <!--    end Detail fragment     -->
 
     <!--    Search fragment     -->

@@ -39,6 +39,12 @@ class NewsFragment : Fragment() {
         viewModel.news.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
                 adapter.submitList(it)
+
+                if (it.isEmpty()) {
+                    binding.newsNoArticlesMessage.visibility = View.VISIBLE
+                } else {
+                    binding.newsNoArticlesMessage.visibility = View.GONE
+                }
             }
         }
 
@@ -89,6 +95,7 @@ class NewsFragment : Fragment() {
         binding.newsNetwork.networkErrorContainer.visibility = View.VISIBLE
         binding.newsProgress.visibility = View.GONE
         binding.newsList.visibility = View.GONE
+        binding.newsNoArticlesMessage.visibility = View.GONE
     }
 
     companion object {
