@@ -5,6 +5,7 @@
     <string name="find_company_or_ticker">Find company or ticker</string>
     <string name="stocks">Stocks</string>
     <string name="favorite">Favorite</string>
+    <string name="retry">Retry</string>
 
     <!--    Detail fragment     -->
     <string name="base_information">Base information</string>
@@ -26,6 +27,12 @@
     <!--    Search fragment     -->
     <string name="you_ve_searched_for_this">You\'ve searched for this</string>
     <!--    end Search fragment     -->
+
+    <!--    Stocks fragment-->
+    <string name="loading_stocks_failed">Loading of stocks failed</string>
+    <string name="refreshing_quotes_failed">Refreshing of quotes failed.</string>
+    <!--    end Stocks fragment-->
+
 
     <!--    Favorites fragment-->
     <string name="no_favorites">There is no favorites yet. \n You can add them with long click on stock.</string>

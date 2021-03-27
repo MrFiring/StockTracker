@@ -26,17 +26,18 @@ class StocksViewModel @Inject constructor(
     private val refreshQuotesUseCase: RefreshQuotesUseCase,
     private val updateStockSymbolUseCase: UpdateStockSymbolUseCase
 ) : AndroidViewModel(application) {
-    private val _navigateToSearchFragment = SingleLiveEvent<Boolean>()
-    val navigateToSearchFragment: LiveData<Boolean>
-        get() = _navigateToSearchFragment
 
     private val _navigateToDetailFragment = SingleLiveEvent<String>()
     val navigateToDetailFragment: LiveData<String>
         get() = _navigateToDetailFragment
 
-    private val _isNetworkError = SingleLiveEvent<Boolean>()
-    val isNetworkError
-        get() = _isNetworkError
+    private val _isNetworkLoadingError = SingleLiveEvent<Boolean>()
+    val isNetworkLoadingError: LiveData<Boolean>
+        get() = _isNetworkLoadingError
+
+    private val _isRefreshError = SingleLiveEvent<Boolean>()
+    val isRefreshError: LiveData<Boolean>
+        get() = _isRefreshError
 
     private val _coldStartIndicator = MutableLiveData<Boolean>()
     val coldStartIndicator: LiveData<Boolean>
@@ -49,11 +50,8 @@ class StocksViewModel @Inject constructor(
     init {
         _stocks = getStocksAndQuotesLiveDataCase()
             .cachedIn(viewModelScope) as MutableLiveData<PagingData<DomainStockSymbol>>
-        refreshStocks()
-    }
 
-    fun navigateToSearch() {
-        _navigateToSearchFragment.value = true
+        refreshQuotes()
     }
 
     fun navigateToDetail(symbol: String) {
@@ -71,14 +69,15 @@ class StocksViewModel @Inject constructor(
         updateStockSymbolUseCase(newSymbol)
     }
 
-    private fun refreshStocks() = viewModelScope.launch {
+    private fun refreshQuotes() = viewModelScope.launch {
         try {
             refreshQuotesUseCase()
         } catch (ex: IOException) {
             Log.e("refresh", "NETWORK TROUBLE: ${ex.stackTraceToString()}")
-            _isNetworkError.value = true
+            _isRefreshError.value = true
         } catch (ex: HttpException) {
             Log.e("refresh", "HTTP exception")
+            _isRefreshError.value = true
         }
     }
 
@@ -89,12 +88,17 @@ class StocksViewModel @Inject constructor(
         _coldStartIndicator.value = true
     }
 
-    fun coldStockUpdate(coldFlag: Boolean) {
+    fun coldQuotesUpdate(coldFlag: Boolean) {
         if (coldFlag) {
-            refreshStocks()
+            refreshQuotes()
             _coldStartIndicator.value = false
         }
     }
 
+    fun retryRefreshQuotes() = refreshQuotes()
+
+    fun onLoadingNetworkError() {
+        _isNetworkLoadingError.value = true
+    }
 
 }
