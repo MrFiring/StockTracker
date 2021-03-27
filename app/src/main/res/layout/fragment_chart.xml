@@ -6,13 +6,80 @@
     android:layout_height="match_parent"
     tools:context=".presentation.details.chart.ChartFragment">
 
-    <TextView
-        android:id="@+id/textView3"
+    <include
+        layout="@layout/layout_network_error"
+        android:id="@+id/chartNetworkError"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/chartProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="It'll a chart"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/chartResolutionGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:singleSelection="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/chartResolutionOneMin"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1M" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/chartResolutionFiveMin"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5M" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/chartResolutionSixtyMin"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="60M" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/chartResolutionDay"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1D" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <com.github.mikephil.charting.charts.CandleStickChart
+        android:id="@+id/candleChart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chartResolutionGroup"
+        tools:visibility="gone" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
