@@ -1,7 +1,6 @@
 package ru.mrfiring.stocktracker.presentation.home.stocks
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +45,6 @@ class StocksFragment : Fragment() {
         //Handle paging loadStates
         recyclerAdapter.addLoadStateListener { state ->
             state.mediator?.let {
-                Log.e("Mediator", it.toString())
                 if (it.refresh is LoadState.Loading) {
                     setIsLoading()
                 } else if (it.refresh is LoadState.Error) {
