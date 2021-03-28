@@ -93,7 +93,7 @@ class SearchViewModel @Inject constructor(
 
     private fun sendSearchRequest() = viewModelScope.launch {
         _queryFlow
-            .debounce(500)
+            .debounce(800)
             .filter {
                 it.isNotEmpty()
             }
