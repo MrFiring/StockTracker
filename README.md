@@ -1,4 +1,4 @@
-# Stock Tracker :tw-1f4c8:
+# Stock Tracker
 
 Application to track US stock quotes.
 
