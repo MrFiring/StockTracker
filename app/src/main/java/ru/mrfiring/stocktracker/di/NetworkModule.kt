@@ -31,13 +31,13 @@ object NetworkModule {
 
                 if (!response.isSuccessful && response.code() == 429) {
                     val rateLimitReset = response.header("x-ratelimit-reset")
+                    response.close()
                     rateLimitReset?.let { rateLim ->
                         val curTime = DateTime.now().millis / 1000L
                         val resetTime = rateLim.toLong() //it's in seconds UTC
                         val dt = resetTime - curTime
                         Thread.sleep((dt + 1) * 1000L)
                     }
-                    response.close()
                     it.proceed(it.request())
                 } else {
                     response
