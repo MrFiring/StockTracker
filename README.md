@@ -1,4 +1,5 @@
 # Stock Tracker
+![Logo](https://github.com/MrFiring/StockTracker/blob/master/imgs/logo.jpg)
 
 Application to track US stock quotes.
 
