@@ -1,11 +1,13 @@
 package ru.mrfiring.stocktracker.presentation.details.chart
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
+import ru.mrfiring.stocktracker.SingleLiveEvent
 import ru.mrfiring.stocktracker.domain.DomainStockCandles
 import ru.mrfiring.stocktracker.domain.FetchStockCandlesUseCase
 import ru.mrfiring.stocktracker.domain.GetStockCandlesUseCase
@@ -38,6 +40,11 @@ class ChartViewModel @Inject constructor(
     val candles: LiveData<DomainStockCandles>
         get() = _candles
 
+    private var _resolution = SingleLiveEvent<CandlesResolution>()
+    val resolution: LiveData<CandlesResolution>
+        get() = _resolution
+
+    @SuppressLint("NullSafeMutableLiveData")
     fun bindData(resolution: CandlesResolution) = viewModelScope.launch {
         try {
             _status.value = LoadingStatus.LOADING
@@ -53,6 +60,7 @@ class ChartViewModel @Inject constructor(
             )
 
             _candles.value = getStockCandlesUseCase(symbol, resolution.value)
+            _resolution.value = resolution
 
             _status.value = LoadingStatus.DONE
         } catch (ex: IOException) {

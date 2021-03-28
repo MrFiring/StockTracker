@@ -38,8 +38,10 @@ class ChartFragment : Fragment() {
         with(binding.candleChart) {
             requestDisallowInterceptTouchEvent(true)
             legend.isEnabled = false
+            description.isEnabled = false
+            isAutoScaleMinMaxEnabled = true
             xAxis.setDrawGridLines(false)
-            xAxis.setDrawLabels(false)
+            xAxis.setLabelCount(2, true)
             xAxis.setAvoidFirstLastClipping(true)
         }
 
@@ -63,6 +65,18 @@ class ChartFragment : Fragment() {
 
         //Toggle button to load chart on startup.
         binding.chartResolutionDay.toggle()
+
+        //Change x-labels format depend on selected resolution
+        viewModel.resolution.observe(viewLifecycleOwner) {
+            with(binding.candleChart) {
+                candleData?.let { data ->
+                    xAxis.valueFormatter = ChartLabelFormatter(
+                        it,
+                        data.getDataSetByIndex(0)
+                    )
+                }
+            }
+        }
 
         //Setup chart when data arrives
         viewModel.candles.observe(viewLifecycleOwner) {
@@ -90,11 +104,12 @@ class ChartFragment : Fragment() {
     private fun setupChart(candles: DomainStockCandles) {
         val entries = mutableListOf<CandleEntry>()
         entries.addAll(
-            candles.timestamp.mapIndexed { i, _ ->
+            candles.timestamp.mapIndexed { i, stamp ->
                 CandleEntry(
                     i.toFloat(),
                     candles.high[i].toFloat(), candles.low[i].toFloat(),
-                    candles.open[i].toFloat(), candles.close[i].toFloat()
+                    candles.open[i].toFloat(), candles.close[i].toFloat(),
+                    stamp
                 )
             }
         )
