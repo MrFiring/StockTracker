@@ -114,9 +114,12 @@ class ChartFragment : Fragment() {
 
         val candleData = CandleData(candleDataSet)
 
-        binding.candleChart.data = candleData
-        binding.candleChart.setVisibleXRangeMaximum(20f)
-        binding.candleChart.invalidate()
+        with(binding.candleChart) {
+            data = candleData
+            setVisibleXRangeMaximum(20f)
+            invalidate()
+            moveViewToX((candleDataSet.entryCount).toFloat())
+        }
     }
 
     private fun setIsLoading() {
