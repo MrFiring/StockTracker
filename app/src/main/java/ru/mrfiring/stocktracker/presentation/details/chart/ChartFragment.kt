@@ -131,7 +131,9 @@ class ChartFragment : Fragment() {
 
         with(binding.candleChart) {
             data = candleData
-            setVisibleXRangeMaximum(20f)
+            setVisibleXRangeMinimum(10f)
+            setVisibleXRangeMaximum(30f)
+            resetZoom()
             invalidate()
             moveViewToX((candleDataSet.entryCount).toFloat())
         }

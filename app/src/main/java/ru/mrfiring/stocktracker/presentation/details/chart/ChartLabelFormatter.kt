@@ -12,7 +12,13 @@ class ChartLabelFormatter(
     private val candleDataSet: ICandleDataSet
 ) : ValueFormatter() {
     override fun getFormattedValue(value: Float): String {
-        val entryData = candleDataSet.getEntryForIndex(value.toInt()).data
+        var entryIndex = value.toInt()
+
+        if (entryIndex >= candleDataSet.entryCount) {
+            entryIndex = candleDataSet.entryCount - 1
+        }
+        
+        val entryData = candleDataSet.getEntryForIndex(entryIndex).data
         if (entryData is Long) {
             return if (resolution == CandlesResolution.DAY) {
                 Instant.ofEpochSecond(entryData).toDateTime().toString(FORMAT_DAY_RESOLUTION)
