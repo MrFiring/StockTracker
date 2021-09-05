@@ -10,7 +10,6 @@ import ru.mrfiring.stocktracker.SingleLiveEvent
 import ru.mrfiring.stocktracker.domain.DomainCompanyNews
 import ru.mrfiring.stocktracker.domain.FetchCompanyNewsListUseCase
 import ru.mrfiring.stocktracker.domain.GetCompanyNewsListBySymbolUseCase
-import ru.mrfiring.stocktracker.presentation.details.general.LoadingStatus
 import java.io.IOException
 import javax.inject.Inject
 
@@ -26,13 +25,8 @@ class NewsFragmentViewModel @Inject constructor(
 
     private val symbol: String = savedStateHandle.get<String>("symbol") ?: ""
 
-    private val _status = MutableLiveData<LoadingStatus>()
-    val status: LiveData<LoadingStatus>
-        get() = _status
-
-    private val _news = MutableLiveData<List<DomainCompanyNews>>()
-    val news: LiveData<List<DomainCompanyNews>>
-        get() = _news
+    private val _state = MutableLiveData<NewsFragmentState>()
+    val state: LiveData<NewsFragmentState> = _state
 
     private val _openWebpage = SingleLiveEvent<DomainCompanyNews>()
     val openWebpage: LiveData<DomainCompanyNews>
@@ -42,20 +36,19 @@ class NewsFragmentViewModel @Inject constructor(
         bindData()
     }
 
-    fun bindData() = viewModelScope.launch {
+    private fun bindData() = viewModelScope.launch {
         try {
             val curTime = DateTime.now()
-            _status.value = LoadingStatus.LOADING
+            _state.value = NewsFragmentState.Loading
             fetchCompanyNewsListUseCase(
                 symbol,
                 fromDate = curTime.minusDays(3).toString(TIME_FORMAT),
                 toDate = curTime.toString(TIME_FORMAT)
             )
-            _news.value = getCompanyNewsListBySymbolUseCase(symbol)
-            _status.value = LoadingStatus.DONE
+            _state.value = NewsFragmentState.Content(getCompanyNewsListBySymbolUseCase(symbol))
         } catch (ex: IOException) {
             Log.e("NEWS", ex.toString())
-            _status.value = LoadingStatus.ERROR
+            _state.value = NewsFragmentState.Error
         }
     }
 
