@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.github.mikephil.charting.components.YAxis
@@ -16,7 +17,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.mrfiring.stocktracker.R
 import ru.mrfiring.stocktracker.databinding.FragmentChartBinding
 import ru.mrfiring.stocktracker.domain.DomainStockCandles
-import ru.mrfiring.stocktracker.presentation.details.general.LoadingStatus
 
 private const val ARG_PARAM = "symbol"
 
@@ -33,7 +33,23 @@ class ChartFragment : Fragment() {
     ): View? {
         binding = FragmentChartBinding.inflate(inflater, container, false)
 
+        initialChartSetup()
 
+        //Listen to button's toggle
+        initResolutionListener()
+
+        //Toggle button to load chart on startup.
+        binding.chartResolutionDay.toggle()
+
+        //Change x-labels format depend on selected resolution
+        viewModel.resolution.observe(viewLifecycleOwner, ::applyResolution)
+        //Setup chart when data arrives
+        viewModel.state.observe(viewLifecycleOwner, ::applyState)
+
+        return binding.root
+    }
+
+    private fun initialChartSetup() {
         //Setup chart base parameters
         with(binding.candleChart) {
             requestDisallowInterceptTouchEvent(true)
@@ -44,8 +60,9 @@ class ChartFragment : Fragment() {
             xAxis.setLabelCount(2, true)
             xAxis.setAvoidFirstLastClipping(true)
         }
+    }
 
-        //Listen to button's toggle
+    private fun initResolutionListener() {
         binding.chartResolutionGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
             when (checkedId) {
                 R.id.chartResolutionDay -> {
@@ -62,43 +79,45 @@ class ChartFragment : Fragment() {
                 }
             }
         }
+    }
 
-        //Toggle button to load chart on startup.
-        binding.chartResolutionDay.toggle()
+    private fun applyResolution(resolution: CandlesResolution) {
+        with(binding.candleChart) {
+            candleData?.let { data ->
+                xAxis.valueFormatter = ChartLabelFormatter(
+                    resolution,
+                    data.getDataSetByIndex(0)
+                )
+            }
+        }
+    }
 
-        //Change x-labels format depend on selected resolution
-        viewModel.resolution.observe(viewLifecycleOwner) {
-            with(binding.candleChart) {
-                candleData?.let { data ->
-                    xAxis.valueFormatter = ChartLabelFormatter(
-                        it,
-                        data.getDataSetByIndex(0)
-                    )
+    private fun applyState(state: ChartFragmentState) {
+        when (state) {
+            ChartFragmentState.Loading -> {
+                with(binding) {
+                    chartProgressBar.isVisible = true
+                    chartNetworkError.networkErrorContainer.isVisible = false
+                    candleChart.isVisible = false
+                }
+            }
+
+            is ChartFragmentState.Content -> {
+                setupChart(state.candles)
+                with(binding) {
+                    candleChart.isVisible = true
+                    chartProgressBar.isVisible = false
+                }
+            }
+
+            ChartFragmentState.Error -> {
+                with(binding) {
+                    chartNetworkError.networkErrorContainer.isVisible = true
+                    chartProgressBar.isVisible = false
+                    candleChart.isVisible = false
                 }
             }
         }
-
-        //Setup chart when data arrives
-        viewModel.candles.observe(viewLifecycleOwner) {
-            setupChart(it)
-        }
-
-        //Loading status observe
-        viewModel.status.observe(viewLifecycleOwner) {
-            when (it) {
-                LoadingStatus.LOADING -> {
-                    setIsLoading()
-                }
-                LoadingStatus.DONE -> {
-                    setIsLoaded()
-                }
-                LoadingStatus.ERROR -> {
-                    setIsError()
-                }
-            }
-        }
-
-        return binding.root
     }
 
     private fun setupChart(candles: DomainStockCandles) {
@@ -136,29 +155,6 @@ class ChartFragment : Fragment() {
             resetZoom()
             invalidate()
             moveViewToX((candleDataSet.entryCount).toFloat())
-        }
-    }
-
-    private fun setIsLoading() {
-        with(binding) {
-            chartProgressBar.visibility = View.VISIBLE
-            chartNetworkError.networkErrorContainer.visibility = View.GONE
-            candleChart.visibility = View.GONE
-        }
-    }
-
-    private fun setIsLoaded() {
-        with(binding) {
-            candleChart.visibility = View.VISIBLE
-            chartProgressBar.visibility = View.GONE
-        }
-    }
-
-    private fun setIsError() {
-        with(binding) {
-            chartNetworkError.networkErrorContainer.visibility = View.VISIBLE
-            chartProgressBar.visibility = View.GONE
-            candleChart.visibility = View.GONE
         }
     }
 
