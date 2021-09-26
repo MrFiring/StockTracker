@@ -1,10 +1,9 @@
 package ru.mrfiring.stocktracker.presentation.home.stocks
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -21,11 +20,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StocksViewModel @Inject constructor(
-    application: Application,
-    private val getStocksAndQuotesLiveDataCase: GetStocksAndQuotesLiveDataCase,
+    getStocksAndQuotesLiveDataCase: GetStocksAndQuotesLiveDataCase,
     private val refreshQuotesUseCase: RefreshQuotesUseCase,
     private val updateStockSymbolUseCase: UpdateStockSymbolUseCase
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     private val _navigateToDetailFragment = SingleLiveEvent<String>()
     val navigateToDetailFragment: LiveData<String>

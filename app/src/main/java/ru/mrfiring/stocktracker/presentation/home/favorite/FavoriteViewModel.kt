@@ -1,9 +1,8 @@
 package ru.mrfiring.stocktracker.presentation.home.favorite
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,18 +14,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
-    application: Application,
     private val getFavoriteLiveDataUseCase: GetFavoriteLiveDataUseCase,
     private val updateStockSymbolUseCase: UpdateStockSymbolUseCase
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     private val _navigateToDetailFragment = SingleLiveEvent<DomainStockSymbol>()
-    val navigateToDetailFragment: LiveData<DomainStockSymbol>
-        get() = _navigateToDetailFragment
+    val navigateToDetailFragment: LiveData<DomainStockSymbol> = _navigateToDetailFragment
 
     private var _favorites = MutableLiveData<List<DomainStockSymbol>>()
-    val favorites: LiveData<List<DomainStockSymbol>>
-        get() = _favorites
+    val favorites: LiveData<List<DomainStockSymbol>> = _favorites
 
     init {
         bindData()
@@ -37,13 +33,7 @@ class FavoriteViewModel @Inject constructor(
     }
 
     fun updateSymbol(symbol: DomainStockSymbol) = viewModelScope.launch {
-        val newSymbol = DomainStockSymbol(
-            symbol.symbol,
-            symbol.companyName,
-            symbol.logoUrl,
-            symbol.quote,
-            !symbol.isFavorite
-        )
+        val newSymbol = symbol.copy(isFavorite = !symbol.isFavorite)
         updateStockSymbolUseCase(newSymbol)
     }
 

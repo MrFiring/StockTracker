@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,53 +25,54 @@ class DetailsGeneralFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailsGeneralBinding
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDetailsGeneralBinding.inflate(inflater, container, false)
 
-        generalViewModel.company.observe(viewLifecycleOwner) {
-            setupInformationCard(it)
-        }
+        generalViewModel.state.observe(viewLifecycleOwner, ::applyState)
 
-        generalViewModel.stock.observe(viewLifecycleOwner) {
-            setupPriceCard(it.quote)
-            setupFavoriteMark(it.isFavorite)
-        }
-
-        binding.favoriteBtn.setOnClickListener {
-            generalViewModel.markAsFavorite()
-        }
-
-        binding.generalNetwork.networkErrorImage.setOnClickListener {
-            generalViewModel.retry()
-        }
-
-        generalViewModel.unsupportedSymbol.observe(viewLifecycleOwner) {
-            binding.detailStockCard.visibility = View.GONE
-        }
-
-        generalViewModel.status.observe(viewLifecycleOwner) {
-            when (it) {
-                LoadingStatus.LOADING -> {
-                    setIsLoading()
-                }
-                LoadingStatus.DONE -> {
-                    setIsLoaded()
-                }
-                else -> {
-                    setIsError()
-                }
-            }
-        }
+        setupListeners()
 
         return binding.root
     }
 
+    private fun applyState(state: DetailsGeneralFragmentState) {
+        when (state) {
+            DetailsGeneralFragmentState.Loading -> {
+                binding.detailLoadingBar.visibility = View.VISIBLE
+                binding.companyCard.visibility = View.GONE
+                binding.detailStockCard.visibility = View.GONE
+                binding.generalNetwork.networkErrorContainer.visibility = View.GONE
+            }
+
+            is DetailsGeneralFragmentState.Content -> {
+                binding.detailLoadingBar.isVisible = false
+
+                state.company?.let(::setupInformationCard)
+                state.stockAndQuote?.let {
+                    setupPriceCard(it.quote)
+                    setupFavoriteMark(it.isFavorite)
+                }
+            }
+
+            DetailsGeneralFragmentState.Error -> {
+                binding.generalNetwork.networkErrorContainer.visibility = View.VISIBLE
+                binding.detailLoadingBar.visibility = View.GONE
+                binding.companyCard.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun setupListeners() {
+        binding.favoriteBtn.setOnClickListener { generalViewModel.markAsFavorite() }
+        binding.generalNetwork.networkErrorImage.setOnClickListener { generalViewModel.retry() }
+    }
+
     private fun setupInformationCard(company: DomainCompany) {
-        binding.apply {
+        with(binding) {
+            companyCard.isVisible = true
             detailCompanyName.text = company.name
 
             detailPhone.text = getString(
@@ -99,7 +101,8 @@ class DetailsGeneralFragment : Fragment() {
 
     @SuppressLint("StringFormatInvalid")
     private fun setupPriceCard(quote: DomainQuote) {
-        binding.apply {
+        with(binding) {
+            detailStockCard.isVisible = true
             detailDayLow.text = getString(
                 R.string.format_current_price,
                 quote.dayLow
@@ -138,9 +141,8 @@ class DetailsGeneralFragment : Fragment() {
     }
 
     private fun setupFavoriteMark(isFavorite: Boolean) {
-        binding.apply {
+        with(binding) {
             if (isFavorite) {
-
                 favoriteBtn.setImageDrawable(
                     ResourcesCompat.getDrawable(
                         resources,
@@ -158,27 +160,6 @@ class DetailsGeneralFragment : Fragment() {
                 )
             }
         }
-    }
-
-    private fun setIsLoading() {
-        binding.detailLoadingBar.visibility = View.VISIBLE
-        binding.companyCard.visibility = View.GONE
-        binding.detailStockCard.visibility = View.GONE
-        binding.generalNetwork.networkErrorContainer.visibility = View.GONE
-    }
-
-    private fun setIsLoaded() {
-        binding.companyCard.visibility = View.VISIBLE
-        if (generalViewModel.unsupportedSymbol.value == null) {
-            binding.detailStockCard.visibility = View.VISIBLE
-        }
-        binding.detailLoadingBar.visibility = View.GONE
-    }
-
-    private fun setIsError() {
-        binding.generalNetwork.networkErrorContainer.visibility = View.VISIBLE
-        binding.detailLoadingBar.visibility = View.GONE
-        binding.companyCard.visibility = View.GONE
     }
 
     companion object {
