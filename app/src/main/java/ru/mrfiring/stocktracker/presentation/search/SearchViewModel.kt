@@ -10,6 +10,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import ru.mrfiring.stocktracker.EmptyLiveData
+import ru.mrfiring.stocktracker.LiveEvent
 import ru.mrfiring.stocktracker.SingleLiveEvent
 import ru.mrfiring.stocktracker.domain.DomainStockSearchItem
 import ru.mrfiring.stocktracker.domain.DomainStockSymbol
@@ -40,8 +42,8 @@ class SearchViewModel @Inject constructor(
     val navigateToDetail: LiveData<DomainStockSymbol>
         get() = _navigateToDetail
 
-    private val _navigateUp = SingleLiveEvent<Boolean>()
-    val navigateUp: LiveData<Boolean>
+    private val _navigateUp = LiveEvent()
+    val navigateUp: EmptyLiveData
         get() = _navigateUp
 
     private val _queryFlow = MutableSharedFlow<String>()
@@ -126,6 +128,6 @@ class SearchViewModel @Inject constructor(
     }
 
     fun onNavigateUp() {
-        _navigateUp.value = true
+        _navigateUp()
     }
 }

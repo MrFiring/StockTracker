@@ -10,6 +10,8 @@ import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import ru.mrfiring.stocktracker.EmptyLiveData
+import ru.mrfiring.stocktracker.LiveEvent
 import ru.mrfiring.stocktracker.SingleLiveEvent
 import ru.mrfiring.stocktracker.domain.DomainStockSymbol
 import ru.mrfiring.stocktracker.domain.GetStocksAndQuotesLiveDataCase
@@ -29,12 +31,12 @@ class StocksViewModel @Inject constructor(
     val navigateToDetailFragment: LiveData<String>
         get() = _navigateToDetailFragment
 
-    private val _isNetworkLoadingError = SingleLiveEvent<Boolean>()
-    val isNetworkLoadingError: LiveData<Boolean>
+    private val _isNetworkLoadingError = LiveEvent()
+    val isNetworkLoadingError: EmptyLiveData
         get() = _isNetworkLoadingError
 
-    private val _isRefreshError = SingleLiveEvent<Boolean>()
-    val isRefreshError: LiveData<Boolean>
+    private val _isRefreshError = LiveEvent()
+    val isRefreshError: EmptyLiveData
         get() = _isRefreshError
 
     private val _coldStartIndicator = MutableLiveData<Boolean>()
@@ -72,10 +74,10 @@ class StocksViewModel @Inject constructor(
             refreshQuotesUseCase()
         } catch (ex: IOException) {
             Log.e("refresh", "NETWORK TROUBLE: ${ex.stackTraceToString()}")
-            _isRefreshError.value = true
+            _isRefreshError()
         } catch (ex: HttpException) {
             Log.e("refresh", "HTTP exception")
-            _isRefreshError.value = true
+            _isRefreshError()
         }
     }
 
@@ -96,7 +98,7 @@ class StocksViewModel @Inject constructor(
     fun retryRefreshQuotes() = refreshQuotes()
 
     fun onLoadingNetworkError() {
-        _isNetworkLoadingError.value = true
+        _isNetworkLoadingError()
     }
 
 }
