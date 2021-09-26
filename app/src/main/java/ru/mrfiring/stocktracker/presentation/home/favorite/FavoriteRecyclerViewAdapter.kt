@@ -10,6 +10,7 @@ class FavoriteRecyclerViewAdapter(
     private val onLongClick: (DomainStockSymbol) -> Unit,
     private val onClick: (DomainStockSymbol) -> Unit
 ) : ListAdapter<DomainStockSymbol, StockViewHolder>(StockSymbolDiffUtilCallback()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockViewHolder {
         return StockViewHolder.from(parent)
     }
