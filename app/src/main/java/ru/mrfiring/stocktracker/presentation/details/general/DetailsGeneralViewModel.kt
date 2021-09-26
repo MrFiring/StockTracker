@@ -1,45 +1,28 @@
 package ru.mrfiring.stocktracker.presentation.details.general
 
-import android.app.Application
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import ru.mrfiring.stocktracker.SingleLiveEvent
-import ru.mrfiring.stocktracker.domain.*
+import ru.mrfiring.stocktracker.domain.FetchCompanyUseCase
+import ru.mrfiring.stocktracker.domain.GetCompanyBySymbolUseCase
+import ru.mrfiring.stocktracker.domain.GetStockAndQuoteBySymbolUseCase
+import ru.mrfiring.stocktracker.domain.UpdateStockSymbolUseCase
 import java.io.IOException
 import javax.inject.Inject
 
-enum class LoadingStatus {
-    LOADING, ERROR, DONE
-}
-
 @HiltViewModel
 class DetailsGeneralViewModel @Inject constructor(
-    application: Application,
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val getCompanyBySymbolUseCase: GetCompanyBySymbolUseCase,
     private val fetchCompanyUseCase: FetchCompanyUseCase,
     private val getStockAndQuoteBySymbolUseCase: GetStockAndQuoteBySymbolUseCase,
     private val updateStockSymbolUseCase: UpdateStockSymbolUseCase
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
-    private val symbol = savedStateHandle.get<String>("symbol") ?: ""
+    private val symbol = savedStateHandle.get<String>("symbol").orEmpty()
 
-    private val _status = MutableLiveData<LoadingStatus>()
-    val status: LiveData<LoadingStatus>
-        get() = _status
-
-    private val _unsupportedSymbol = SingleLiveEvent<Boolean>()
-    val unsupportedSymbol: LiveData<Boolean>
-        get() = _unsupportedSymbol
-
-    private val _company = MutableLiveData<DomainCompany>()
-    val company: LiveData<DomainCompany>
-        get() = _company
-
-    private val _stock = MutableLiveData<DomainStockSymbol>()
-    val stock: LiveData<DomainStockSymbol>
-        get() = _stock
+    private val _state = MutableLiveData<DetailsGeneralFragmentState>()
+    val state: LiveData<DetailsGeneralFragmentState> = _state
 
     init {
         bindData()
@@ -47,41 +30,55 @@ class DetailsGeneralViewModel @Inject constructor(
 
     private fun bindData() = viewModelScope.launch {
         try {
-            _status.value = LoadingStatus.LOADING
+            _state.value = DetailsGeneralFragmentState.Loading
             fetchCompanyUseCase(symbol)
-            val companyInfo = getCompanyBySymbolUseCase(symbol)
-            companyInfo?.let {
-                _company.value = it
 
-                bindSymbolPriceCard()
-
-                _status.value = LoadingStatus.DONE
+            launch {
+                getCompanyBySymbolUseCase(symbol)?.let { company ->
+                    _state.value?.let {
+                        if (it is DetailsGeneralFragmentState.Content) {
+                            _state.value = it.copy(company = company)
+                        } else {
+                            _state.value = DetailsGeneralFragmentState.Content(
+                                company = company,
+                                stockAndQuote = null
+                            )
+                        }
+                    }
+                }
             }
+            launch {
+                getStockAndQuoteBySymbolUseCase(symbol)?.let { stock ->
+                    _state.value?.let {
+                        if (it is DetailsGeneralFragmentState.Content) {
+                            _state.value = it.copy(stockAndQuote = stock)
+                        } else {
+                            _state.value = DetailsGeneralFragmentState.Content(
+                                company = null,
+                                stockAndQuote = stock
+                            )
+                        }
+                    }
+                }
+            }
+
         } catch (ex: IOException) {
-            _status.value = LoadingStatus.ERROR
+            _state.value = DetailsGeneralFragmentState.Error
         }
-    }
-
-    private suspend fun bindSymbolPriceCard() {
-        try {
-            _stock.value = getStockAndQuoteBySymbolUseCase(symbol)
-        } catch (ex: NullPointerException) {
-            _unsupportedSymbol.value = true
-        }
-
     }
 
     fun retry() = bindData()
 
     fun markAsFavorite() = viewModelScope.launch {
-        val curStock = _stock.value
-        curStock?.let {
-            val newStock = DomainStockSymbol(
-                it.symbol, it.companyName, it.logoUrl, it.quote, !it.isFavorite
-            )
-            _stock.value = newStock
+        val curState = _state.value as DetailsGeneralFragmentState.Content
+        curState.stockAndQuote
+
+        val newStock = curState.stockAndQuote?.let { it.copy(isFavorite = !it.isFavorite) }
+        if (newStock != null) {
             updateStockSymbolUseCase(newStock)
+            _state.value = curState.copy(stockAndQuote = newStock)
         }
     }
+
 
 }
