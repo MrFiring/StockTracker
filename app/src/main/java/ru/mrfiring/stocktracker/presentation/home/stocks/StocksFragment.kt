@@ -34,12 +34,8 @@ class StocksFragment : Fragment() {
         )
 
         val recyclerAdapter = StocksRecyclerViewAdapter(
-            onClick = {
-                stocksViewModel.navigateToDetail(it.symbol)
-            },
-            onLongClick = {
-                stocksViewModel.markAsFavorite(it)
-            }
+            onClick = { stocksViewModel.navigateToDetail(it.symbol) },
+            onLongClick = stocksViewModel::markAsFavorite
         )
 
         //Handle paging loadStates
@@ -79,40 +75,15 @@ class StocksFragment : Fragment() {
         //Handle error if initial loading fails
         stocksViewModel.isNetworkLoadingError.observe(viewLifecycleOwner) {
             setIsInitialLoadingError()
-            Snackbar
-                .make(
-                    requireParentFragment().requireView(),
-                    getString(R.string.loading_stocks_failed),
-                    Snackbar.LENGTH_INDEFINITE
-                )
-                .setAction(getString(R.string.retry)) {
-                    recyclerAdapter.retry()
-                }
-                .show()
+            showNetworkError()
         }
 
         //Handle error if refreshing of stock quotes fails
         stocksViewModel.isRefreshError.observe(viewLifecycleOwner) {
-            Snackbar
-                .make(
-                    requireParentFragment().requireView(),
-                    getString(R.string.refreshing_quotes_failed),
-                    Snackbar.LENGTH_INDEFINITE
-                )
-                .setAction(getString(R.string.retry)) {
-                    stocksViewModel.retryRefreshQuotes()
-                }
-                .show()
+            showRefreshError()
         }
 
-        stocksViewModel.navigateToDetailFragment.observe(viewLifecycleOwner) {
-            this.findNavController()
-                .navigate(
-                    HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
-                        it
-                    )
-                )
-        }
+        stocksViewModel.navigateToDetailFragment.observe(viewLifecycleOwner, ::navigateToDetails)
 
         return binding.root
     }
@@ -133,5 +104,39 @@ class StocksFragment : Fragment() {
         binding.stocksNetworkError.networkErrorText.visibility = View.GONE
         binding.stockList.visibility = View.GONE
         binding.loadingBar.visibility = View.GONE
+    }
+
+    private fun showNetworkError() {
+        Snackbar
+            .make(
+                requireParentFragment().requireView(),
+                getString(R.string.loading_stocks_failed),
+                Snackbar.LENGTH_INDEFINITE
+            )
+            .setAction(getString(R.string.retry)) {
+                val adapter = binding.stockList.adapter as StocksRecyclerViewAdapter
+                adapter.retry()
+            }
+            .show()
+    }
+
+    private fun showRefreshError() {
+        Snackbar
+            .make(
+                requireParentFragment().requireView(),
+                getString(R.string.refreshing_quotes_failed),
+                Snackbar.LENGTH_INDEFINITE
+            )
+            .setAction(getString(R.string.retry)) {
+                stocksViewModel.retryRefreshQuotes()
+            }
+            .show()
+    }
+
+    private fun navigateToDetails(arg: String) {
+        findNavController()
+            .navigate(
+                HomeFragmentDirections.actionHomeFragmentToDetailsFragment(arg)
+            )
     }
 }
